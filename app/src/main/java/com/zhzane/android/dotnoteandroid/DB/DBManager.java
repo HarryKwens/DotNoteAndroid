@@ -19,7 +19,7 @@ public class DBManager {
         helper = new DBHelper(context);
         db = helper.getWritableDatabase();
     }
-
+    /*添加账单*/
     public void addBill(List<Bill> bills){
         db.beginTransaction();
         try {
@@ -32,6 +32,7 @@ public class DBManager {
             db.endTransaction();
         }
     }
+    /*添加用户*/
     public void addUser(List<User> users){
         db.beginTransaction();
         try {
@@ -44,6 +45,7 @@ public class DBManager {
             db.endTransaction();
         }
     }
+    /*添加标签*/
     public void addTag(List<Tag> tags){
         db.beginTransaction();
         try {
@@ -56,7 +58,7 @@ public class DBManager {
             db.endTransaction();
         }
     }
-
+    /*账单修改*/
     public void updateBill(Bill bill){
         ContentValues cv = new ContentValues();
         cv.put("BillNo",bill.BillNo);
@@ -66,7 +68,7 @@ public class DBManager {
         cv.put("TagId", bill.TagId);
         db.update("Bill", cv, "BillNo = ?", new String[]{bill.BillNo});
     }
-
+    /*用户修改*/
     public void updateUser(User user){
         ContentValues cv = new ContentValues();
         cv.put("UserId",user.UserId);
@@ -76,14 +78,14 @@ public class DBManager {
         cv.put("MAC",user.MAC);
         db.update("User",cv,"UserId = ?",new String[]{user.UserId});
     }
-
+    /*标签修改*/
     public void updateTag(Tag tag){
         ContentValues cv = new ContentValues();
         cv.put("TagID",tag.TagId);
         cv.put("TagName",tag.TagName);
         db.update("Tag",cv,"TagId = ?", new String[]{tag.TagId});
     }
-
+    /*删除账单*/
     public void deleteBill(Bill bill){
         db.beginTransaction();
         try {
@@ -93,7 +95,7 @@ public class DBManager {
             db.endTransaction();
         }
     }
-
+    /*删除用户*/
     public void deleteUser(User user){
         db.beginTransaction();
         try {
@@ -103,7 +105,7 @@ public class DBManager {
             db.endTransaction();
         }
     }
-
+    /*查询全部*/
     public Cursor queryTheCursor(String tableName){
         Cursor c = db.rawQuery("SELECT * FROM" +tableName,null);
         return c;
