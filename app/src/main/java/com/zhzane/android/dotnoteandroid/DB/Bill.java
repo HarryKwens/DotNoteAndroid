@@ -7,6 +7,14 @@ import java.util.regex.Pattern;
 /**
  * Created by KWENS on 2016/2/16.
  * 账单实体类。在setter中对数据进行格式验证。
+ * @id 自增列ID；
+ * @BillNo 账单计数，记录第N笔账单。
+ * @UserID 账单所属用户Id。
+ * @Money 每笔账单所记录金钱数目。正数表示收入，负数表示支出。
+ * @CreateTime 每笔账单创建时间。
+ * @LastModifiedTime 每笔账单的最后修改时间。
+ * @ExternalId 外部用户Id
+ * @TagId 每笔账单所属标签，每笔账单可以同时拥有多个TagId。
  */
 public class Bill {
     public int id;
@@ -14,16 +22,20 @@ public class Bill {
     public String UserId;
     public Double Money;
     public String CreateTime;
+    public String LastModifiedTime;
+    public String ExternalId;
     public String TagId;
 
     public Bill(){}
 
-    public Bill(int id,String billNo, String userId, Double money, String createTime, String tagId) {
+    public Bill(int id, String billNo, String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId) {
         this.id = id;
         BillNo = billNo;
         UserId = userId;
         Money = money;
         CreateTime = createTime;
+        LastModifiedTime = lastModifiedTime;
+        ExternalId = externalId;
         TagId = tagId;
     }
 
@@ -40,21 +52,12 @@ public class Bill {
     }
 
     public void setBillNo(String billNo) {
-        try {
-            String regex ="^[A-Za-z0-9]+$";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(billNo);
-            boolean rs = matcher.matches();
-            if (rs){
-                BillNo = billNo;
-            }
-            else{
-                Exception e = new Exception("BillNo数据格式不正确");
-                throw e;
-            }
-        }
-        catch (Exception e){
-            System.out.print(e.getMessage());
+        String regex ="^[A-Za-z0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(billNo);
+        boolean rs = matcher.matches();
+        if (rs){
+            BillNo = billNo;
         }
     }
 
@@ -71,21 +74,12 @@ public class Bill {
     }
 
     public void setMoney(Double money) {
-        try {
-            String regex ="^-[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*|[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*$";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(Double.toString(money));
-            boolean rs = matcher.matches();
-            if (rs){
-                Money = money;
-            }
-            else{
-                Exception e = new Exception("money数据格式不正确");
-                throw e;
-            }
-        }
-        catch (Exception e){
-            System.out.print(e.getMessage());
+        String regex ="^-[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*|[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(Double.toString(money));
+        boolean rs = matcher.matches();
+        if (rs){
+            Money = money;
         }
     }
 
@@ -94,21 +88,12 @@ public class Bill {
     }
 
     public void setCreateTime(String createTime) {
-        try {
-            String regex ="^[A-Za-z0-9]+$";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(createTime);
-            boolean rs = matcher.matches();
-            if (rs){
-                CreateTime = createTime;
-            }
-            else{
-                Exception e = new Exception("createTime数据格式不正确");
-                throw e;
-            }
-        }
-        catch (Exception e){
-            System.out.print(e.getMessage());
+        String regex ="^[A-Za-z0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(createTime);
+        boolean rs = matcher.matches();
+        if (rs){
+            CreateTime = createTime;
         }
     }
 
@@ -118,5 +103,27 @@ public class Bill {
 
     public void setTagId(String tagId) {
         TagId = tagId;
+    }
+
+    public String getLastModifiedTime() {
+        return LastModifiedTime;
+    }
+
+    public void setLastModifiedTime(String lastModifiedTime) {
+        LastModifiedTime = lastModifiedTime;
+    }
+
+    public String getExternalId() {
+        return ExternalId;
+    }
+
+    public void setExternalId(String externalId) {
+        String regex ="^[A-Za-z0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(externalId);
+        boolean rs = matcher.matches();
+        if (rs){
+            ExternalId = externalId;
+        }
     }
 }
