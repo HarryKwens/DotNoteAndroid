@@ -3,8 +3,4 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorDivider">#cccccc</color>
-    <color name="colorIncomeFont">#990033</color>
-    <color name="colorPayFont">#6B8E23</color>
-    <color name="colorWhite">#ffffff</color>
 </resources>
