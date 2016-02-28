@@ -4,7 +4,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     <color name="colorDivider">#cccccc</color>
@@ -17,6 +16,4 @@
     <color name="colorAccent">#66CCFF</color>
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
-=======
->>>>>>> parent of cd93d0b... Merge pull request #3 from HarryKwens/kwens
 </resources>
