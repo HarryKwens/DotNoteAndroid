@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:orientation="vertical"
+    >
+    <!-- 金额输入-->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:singleLine="true"
+        android:drawableLeft="@drawable/ic_notifications_black_24dp"
+        android:drawablePadding="8dp"
+        android:textColor="#222222"
+        android:hint="@string/txtAddBill_Money"
+        />
+    <!-- 该条账单的描述-->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="8dp"
+        android:ems="20"
+        android:id="@+id/editText"
+        android:layout_gravity="center_horizontal"
+        android:hint="@string/txtAddBill_Describe"
+        android:textColor="#222222"
+        android:drawablePadding="8dp"
+        />
+    <!-- 该条账单创建时间-->
+    <EditText
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:inputType="date"
+    android:singleLine="true"
+    android:drawableLeft="@drawable/ic_notifications_black_24dp"
+    android:drawablePadding="8dp"
+    android:textColor="#222222"
+    android:hint="@string/txtAddBill_CreateTime"
+    />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:inputType="date"
+        android:singleLine="true"
+        android:drawableLeft="@drawable/ic_notifications_black_24dp"
+        android:drawablePadding="8dp"
+        android:textColor="#222222"
+        android:hint="@string/txtAddBill_CreateTime"
+        />
+</LinearLayout>
