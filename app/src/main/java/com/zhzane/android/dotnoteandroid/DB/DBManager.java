@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Created by KWENS on 2016/2/16.
  */
-
 public class DBManager {
     private DBHelper helper;
     private SQLiteDatabase db;
@@ -21,13 +20,11 @@ public class DBManager {
         db = helper.getWritableDatabase();
     }
     /*添加账单*/
-
     public void addBill(List<Bill> bills){
         db.beginTransaction();
         try {
             for (Bill bill : bills) {
-                db.execSQL("INSERT INTO Bill VALUES(null,?,?,?,?,?,?,?)",
-                        new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId});
+                db.execSQL("INSERT INTO Bill VALUES(null,?,?,?,?,?)",new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.TagId});
             }
             db.setTransactionSuccessful();
         }
@@ -68,8 +65,6 @@ public class DBManager {
         cv.put("UserId",bill.UserId);
         cv.put("Money",bill.Money);
         cv.put("CreateTime",bill.CreateTime);
-        cv.put("LastModifiedTime",bill.LastModifiedTime);
-        cv.put("ExternalId",bill.ExternalId);
         cv.put("TagId", bill.TagId);
         db.update("Bill", cv, "BillNo = ?", new String[]{bill.BillNo});
     }
@@ -115,7 +110,6 @@ public class DBManager {
         Cursor c = db.rawQuery("SELECT * FROM" +tableName,null);
         return c;
     }
-    /*查询账单列表*/
     public List<Bill> queryBill(){
         ArrayList<Bill> bills = new ArrayList<Bill>();
         Cursor c = queryTheCursor("Bill");
@@ -132,7 +126,7 @@ public class DBManager {
         c.close();
         return bills;
     }
-    /*查询用户列表*/
+
     public List<User> queryUser(){
         ArrayList<User> users = new ArrayList<User>();
         Cursor c = queryTheCursor("User");
@@ -149,7 +143,7 @@ public class DBManager {
         c.close();
         return users;
     }
-    /*查询标签列表*/
+
     public List<Tag> queryTag(){
         ArrayList<Tag> tags = new ArrayList<Tag>();
         Cursor c = queryTheCursor("Tag");
@@ -162,7 +156,7 @@ public class DBManager {
         c.close();
         return tags;
     }
-    /*关闭数据库*/
+
     public void CloseDB(){
         db.close();
     }

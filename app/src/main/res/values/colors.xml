@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< Updated upstream
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+<<<<<<< Updated upstream
+=======
+    <color name="colorDivider">#cccccc</color>
+    <color name="colorIncomeFont">#990033</color>
+    <color name="colorPayFont">#6B8E23</color>
+    <color name="colorWhite">#ffffff</color>
+=======
+    <color name="colorPrimary">#66CCCC</color>
+    <color name="colorPrimaryDark">#55BBBB</color>
+    <color name="colorAccent">#66CCFF</color>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 </resources>
