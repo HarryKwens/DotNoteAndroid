@@ -4,11 +4,14 @@
     <string name="title">DotNote</string>
     <string name="title_activity_bill">DotNote</string>
 
-    <!-- 账单页面 -->
+    <!-- 账单添加页面 -->
     <string name="txtAddBill_Money">金额</string>
-    <string name="txtAddBill_Describe">描述</string>
-    <string name="txtAddBill_CreateTime">时间</string>
-    <string name="txtAddBill_Tag">账单类别标签</string>
+    <string name="txtAddBill_Describe">备注</string>
+    <string name="txtAddBill_CreateTime">创建时间</string>
+    <string name="txtAddBill_Tag">标签</string>
+    <string name="txtAddBill_title">添加账单</string>
+    <string name="txtAddBill_hint_decribe">这里是牛逼的备注</string>
+    <string name="txtAddBill_submit">完成添加</string>
     <!-- Strings related to Settings -->
 
     <!-- Image Font -->
@@ -72,4 +75,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_bill__add_">Bill_Add_Activity</string>
 </resources>
