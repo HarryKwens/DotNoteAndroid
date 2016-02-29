@@ -6,9 +6,12 @@
 
     <!-- 账单页面 -->
     <string name="txtAddBill_Money">金额</string>
-    <string name="txtAddBill_Describe">描述</string>
-    <string name="txtAddBill_CreateTime">时间</string>
-    <string name="txtAddBill_Tag">账单类别标签</string>
+    <string name="txtAddBill_Describe">备注</string>
+    <string name="txtAddBill_CreateTime">创建时间</string>
+    <string name="txtAddBill_Tag">标签</string>
+    <string name="txtAddBill_title">添加账单</string>
+    <string name="txtAddBill_hint_decribe">这里是牛逼的备注</string>
+    <string name="txtAddBill_submit">完成添加</string>
     <!-- Strings related to Settings -->
 
     <!-- Image Font -->

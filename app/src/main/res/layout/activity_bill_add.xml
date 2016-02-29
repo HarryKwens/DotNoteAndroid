@@ -1,55 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:orientation="vertical"
-    >
-    <!-- 金额输入-->
-    <EditText
+    android:background="@color/colorbackground"
+    android:orientation="vertical">
+    <!-- ToolBar标题栏-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="?attr/homeAsUpIndicator">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/txtAddBill_title"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:singleLine="true"
-        android:drawableLeft="@drawable/ic_notifications_black_24dp"
-        android:drawablePadding="8dp"
-        android:textColor="#222222"
-        android:hint="@string/txtAddBill_Money"
-        />
-    <!-- 该条账单的描述-->
-    <EditText
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding10">
+        <!-- 金额输入-->
+        <TextView
+            android:id="@+id/txt_BillAdd_Money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding10"
+            android:text="@string/txtAddBill_Money"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding10"
+            android:orientation="horizontal">
+            <!-- 金额正负（形式待定）-->
+            <ImageView
+                android:layout_width="@dimen/editText_height"
+                android:layout_height="@dimen/editText_height"
+                android:background="@drawable/rounded_editext" />
+            <!-- 输入金额，币制待定-->
+            <EditText
+                android:id="@+id/edtxt_BillAdd_Money"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/margin_padding10"
+                android:background="@drawable/rounded_editext"
+                android:drawablePadding="8dp"
+                android:drawableRight="@drawable/ic_notifications_black_24dp"
+                android:hint="@string/txtAddBill_Money"
+                android:singleLine="true"
+                android:textColor="#222222"
+                android:inputType="numberDecimal"
+                />
+
+        </LinearLayout>
+        <!-- 账单创建时间-->
+        <TextView
+            android:id="@+id/txt_BillAdd_CreateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:text="@string/txtAddBill_CreateTime"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edtxt_BillAdd_CreateTime"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_editext"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="@string/txtAddBill_CreateTime"
+            android:inputType="datetime"
+            android:singleLine="true"
+            android:textColor="#222222" />
+        <!-- 备注 -->
+        <TextView
+            android:id="@+id/txt_BillAdd_Describe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:text="@string/txtAddBill_Describe"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edtxt_BillAdd_Describe"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_editext"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="@string/txtAddBill_hint_decribe"
+            android:singleLine="true"
+            android:textColor="#222222" />
+        <!-- 标签 （待研究）-->
+        <TextView
+            android:id="@+id/txt_BillAdd_Tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:text="@string/txtAddBill_Tag"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_padding10"
+        >
+    <!-- 完成添加按钮-->
+    <Button
+        android:id="@+id/btn_BillAdd_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:layout_marginTop="8dp"
-        android:ems="20"
-        android:id="@+id/editText"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/txtAddBill_Describe"
-        android:textColor="#222222"
-        android:drawablePadding="8dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:text="@string/txtAddBill_submit"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:background="@color/colorPrimaryDark"
         />
-    <!-- 该条账单创建时间-->
-    <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:inputType="date"
-    android:singleLine="true"
-    android:drawableLeft="@drawable/ic_notifications_black_24dp"
-    android:drawablePadding="8dp"
-    android:textColor="#222222"
-    android:hint="@string/txtAddBill_CreateTime"
-    />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:inputType="date"
-        android:singleLine="true"
-        android:drawableLeft="@drawable/ic_notifications_black_24dp"
-        android:drawablePadding="8dp"
-        android:textColor="#222222"
-        android:hint="@string/txtAddBill_CreateTime"
-        />
+    </RelativeLayout>
 </LinearLayout>

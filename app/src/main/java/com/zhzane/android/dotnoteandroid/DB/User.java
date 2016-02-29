@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  */
 
 public class User {
-    public int id;
+    public int _id;
     public String UserId;
     public String UserName;
     public Double TotalMoney;
@@ -25,7 +25,7 @@ public class User {
     public User(){}
 
     public User(int id, String userId, String userName, Double totalMoney, String relatedUserId, String MAC) {
-        this.id = id;
+        this._id = id;
         UserId = userId;
         UserName = userName;
         TotalMoney = totalMoney;
@@ -34,11 +34,11 @@ public class User {
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getUserId() {

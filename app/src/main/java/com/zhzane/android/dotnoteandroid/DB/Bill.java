@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * @TagId 每笔账单所属标签，每笔账单可以同时拥有多个TagId。
  */
 public class Bill {
-    public int id;
+    public int _id;
     public String BillNo;
     public String UserId;
     public Double Money;
@@ -25,11 +25,12 @@ public class Bill {
     public String LastModifiedTime;
     public String ExternalId;
     public String TagId;
+    public String Describe;
 
     public Bill(){}
 
-    public Bill(int id, String billNo, String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId) {
-        this.id = id;
+    public Bill(int id, String billNo, String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId,String describe) {
+        this._id = id;
         BillNo = billNo;
         UserId = userId;
         Money = money;
@@ -37,14 +38,15 @@ public class Bill {
         LastModifiedTime = lastModifiedTime;
         ExternalId = externalId;
         TagId = tagId;
+        Describe = describe;
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getBillNo() {
@@ -126,4 +128,18 @@ public class Bill {
             ExternalId = externalId;
         }
     }
+    public String getDescribe() {
+        return Describe;
+    }
+
+    public void setDescribe(String describe) {
+        String regex ="^[A-Za-z0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(describe);
+        boolean rs = matcher.matches();
+        if (rs){
+            Describe = describe;
+        }
+    }
+
 }

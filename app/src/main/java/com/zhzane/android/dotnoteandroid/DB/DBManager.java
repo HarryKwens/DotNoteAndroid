@@ -22,12 +22,24 @@ public class DBManager {
     }
     /*添加账单*/
 
-    public void addBill(List<Bill> bills){
+    public void addBill(Bill bill){
+        db.beginTransaction();
+        try {
+            db.execSQL("INSERT INTO Bill values(?,?,?,?,?,?,?,?)",
+                    new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
+            db.setTransactionSuccessful();
+        }
+        finally {
+            db.endTransaction();
+        }
+    }
+
+    public void addBills(List<Bill> bills){
         db.beginTransaction();
         try {
             for (Bill bill : bills) {
-                db.execSQL("INSERT INTO Bill VALUES(null,?,?,?,?,?,?,?)",
-                        new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId});
+                db.execSQL("INSERT INTO Bill VALUES(null,?,?,?,?,?,?,?,?)",
+                        new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
             }
             db.setTransactionSuccessful();
         }
@@ -121,7 +133,7 @@ public class DBManager {
         Cursor c = queryTheCursor("Bill");
         while (c.moveToNext()){
             Bill bill = new Bill();
-            bill.id = c.getInt(c.getColumnIndex("id"));
+            bill._id = c.getInt(c.getColumnIndex("id"));
             bill.BillNo = c.getString(c.getColumnIndex("BillNo"));
             bill.UserId = c.getString(c.getColumnIndex("UserId"));
             bill.Money = c.getDouble(c.getColumnIndex("Money"));
@@ -138,7 +150,7 @@ public class DBManager {
         Cursor c = queryTheCursor("User");
         while (c.moveToNext()){
             User user = new User();
-            user.id = c.getInt(c.getColumnIndex("id"));
+            user._id = c.getInt(c.getColumnIndex("id"));
             user.UserId = c.getString(c.getColumnIndex("UserId"));
             user.UserName = c.getString(c.getColumnIndex("UserName"));
             user.TotalMoney = c.getDouble(c.getColumnIndex("TotalMoney"));
