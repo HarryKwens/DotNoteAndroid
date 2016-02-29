@@ -5,18 +5,15 @@
     android:padding="10dp"
     android:orientation="vertical"
     >
-    <!-- 显示金额 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
-        <!-- 金额正负-->
         <ImageView
             android:id="@+id/symbol"
             android:layout_width="30dp"
             android:layout_height="30dp" />
-        <!-- 金额数值-->
         <TextView
             android:id="@+id/money"
             android:layout_width="wrap_content"
@@ -31,9 +28,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding10"
+        android:layout_marginTop="@dimen/margin10"
         >
-        <!-- 备注描述-->
         <TextView
             android:id="@+id/describe"
             android:layout_width="wrap_content"
@@ -45,9 +41,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding10"
+        android:layout_marginTop="@dimen/margin10"
         >
-        <!-- 账单创建时间-->
         <TextView
             android:id="@+id/createTime"
             android:layout_width="wrap_content"
@@ -55,7 +50,6 @@
             android:textSize="@dimen/font_size18"
             android:layout_centerVertical="true"
             android:text="这里是时间"/>
-        <!-- 待定-->
         <ImageView
             android:id="@+id/tag"
             android:layout_width="30dp"
