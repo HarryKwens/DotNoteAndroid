@@ -20,14 +20,14 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //创建账单表（Bill）
-        db.execSQL("CREATE TABLE IF NOT EXISTS Bill" +
+        db.execSQL("CREATE TABLE Bill" +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,BillNo VARCHAR,UserId VARCHAR,Money DECIMAL,CreateTime VARCHAR," +
                 "LastModifiedTime VARCHAR,ExternalId VARCHAR,TagId VARCHAR)");
         //创建用户表（User）
-        db.execSQL("CREATE TABLE IF NOT EXISTS User" +
+        db.execSQL("CREATE TABLE User" +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,UserName VARCHAR,TotalMoney DECIMAL,RelatedUserId VARCHAR,MAC VARCHAR)");
         //创建标签表（Tag）
-        db.execSQL("CREATE TABLE IF NOT EXISTS Tag" +
+        db.execSQL("CREATE TABLE Tag" +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId VARCHAR,TagName VARCHAR)");
     }
     //版本修改时调用

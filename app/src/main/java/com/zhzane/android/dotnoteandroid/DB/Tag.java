@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * @TagName 标签名称 格式为中英文数字皆可。
  */
 public class Tag {
-    public int id;
+    public int _id;
     public String TagId;
     public String TagName;
     public ArrayList<String> IdList;
@@ -21,17 +21,17 @@ public class Tag {
     }
 
     public Tag(int id, String tagId, String tagName) {
-        this.id = id;
+        this._id = id;
         TagId = tagId;
         TagName = tagName;
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getTagId() {
