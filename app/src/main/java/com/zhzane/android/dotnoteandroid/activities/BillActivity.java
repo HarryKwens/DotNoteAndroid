@@ -1,5 +1,6 @@
 package com.zhzane.android.dotnoteandroid.activities;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class BillActivity extends AppCompatActivity {
+public class BillActivity extends BaseActivity {
 
     private ListView listView;      //账单列表
     private SimpleAdapter sim_adapter;      //数据适配器
@@ -30,6 +31,7 @@ public class BillActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //TextView mTitle = (TextView)toolbar.findViewById(R.id.txtTitle);
         setSupportActionBar(toolbar);

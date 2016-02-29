@@ -4,21 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            >
+            android:background="?attr/colorPrimary">
+
+            <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/awesome_user"
+                android:textSize="20sp"
+                android:textColor="@color/colorWhite"/>
+
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
@@ -26,8 +33,9 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="#fff"
                 android:text="@string/title"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
+
+            
             <!--<Button-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
@@ -46,6 +54,5 @@
 
     <include
         android:id="@+id/view_circle_button"
-        layout="@layout/view_circle_button"
-        />
+        layout="@layout/view_circle_button" />
 </RelativeLayout>
