@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
  * Created by zhzane on 16/2/29.
  * 用于处理应用中各Activity统一的操作
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

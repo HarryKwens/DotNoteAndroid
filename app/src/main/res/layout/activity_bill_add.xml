@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorbackground"
+    android:background="@color/colorBackground"
     android:orientation="vertical">
     <!-- ToolBar标题栏-->
     <android.support.v7.widget.Toolbar
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding10"
             android:text="@string/txtAddBill_Money"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,10 +43,14 @@
             android:layout_marginTop="@dimen/margin_padding10"
             android:orientation="horizontal">
             <!-- 金额正负（形式待定）-->
-            <ImageView
+            <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeButton
+                android:id="@+id/bill_add_button_is_add"
                 android:layout_width="@dimen/editText_height"
                 android:layout_height="@dimen/editText_height"
-                android:background="@drawable/rounded_editext" />
+                android:background="@drawable/rounded_editext"
+                android:textColor="@color/colorMoneyDecrease"
+                android:textSize="24sp"
+                android:text="@string/awesome_minus"/>
             <!-- 输入金额，币制待定-->
             <EditText
                 android:id="@+id/edtxt_BillAdd_Money"
@@ -56,11 +60,13 @@
                 android:background="@drawable/rounded_editext"
                 android:drawablePadding="8dp"
                 android:drawableRight="@drawable/ic_notifications_black_24dp"
-                android:hint="@string/txtAddBill_Money"
+                android:paddingLeft="20sp"
+                android:paddingRight="10sp"
+                android:hint="金额"
                 android:singleLine="true"
-                android:textColor="#222222"
-                android:inputType="numberDecimal"
-                />
+                android:textColor="@color/colorMoneyDecrease"
+                android:textSize="24sp"
+                android:inputType="numberDecimal" />
 
         </LinearLayout>
         <!-- 账单创建时间-->
@@ -70,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding20"
             android:text="@string/txtAddBill_CreateTime"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edtxt_BillAdd_CreateTime"
@@ -91,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding20"
             android:text="@string/txtAddBill_Describe"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edtxt_BillAdd_Describe"
@@ -100,7 +106,9 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_editext"
             android:drawablePadding="8dp"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
             android:hint="@string/txtAddBill_hint_decribe"
             android:singleLine="true"
             android:textColor="#222222" />
@@ -111,7 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding20"
             android:text="@string/txtAddBill_Tag"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
     </LinearLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -127,7 +135,7 @@
         android:layout_alignParentBottom="true"
         android:text="@string/txtAddBill_submit"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:background="@color/colorPrimaryDark"
         />
     </RelativeLayout>

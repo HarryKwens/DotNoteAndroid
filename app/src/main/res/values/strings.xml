@@ -19,6 +19,7 @@
     <string name="awesome_user">\uf007</string>
     <string name="awesome_cloud">\uf0c2</string>
     <string name="awesome_tags">\uf02c</string>
+    <string name="awesome_minus">\uf068</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

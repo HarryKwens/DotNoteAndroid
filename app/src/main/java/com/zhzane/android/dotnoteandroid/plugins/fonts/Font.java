@@ -6,8 +6,6 @@ import android.graphics.Typeface;
 /**
  * Created by zhzane on 16/2/28.
  */
-public abstract class Font {
-    private static AssetManager assetManager;
-
+public interface Font {
     public abstract Typeface getTypeface();
 }

@@ -58,7 +58,7 @@ public class BillActivity extends BaseActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BillActivity.this, Bill_Add_Activity.class);
+                Intent intent = new Intent(BillActivity.this, BillAddActivity.class);
                 startActivity(intent);
             }
         });

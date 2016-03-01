@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Bill_Add_Activity">
+        <activity android:name=".activities.BillAddActivity">
         </activity>
     </application>
 

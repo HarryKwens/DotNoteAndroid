@@ -7,7 +7,7 @@ import android.util.Log;
 /**
  * Created by zhzane on 16/2/28.
  */
-public class FontAwesome extends Font {
+public class FontAwesome implements Font {
     private static FontAwesome fontAwesome = null;
     private static final String fontPath = "fonts/fontawesome-webfont.ttf";
 
