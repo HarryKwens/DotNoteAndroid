@@ -5,7 +5,7 @@
     android:padding="10dp"
     android:orientation="vertical"
     >
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -13,18 +13,19 @@
         <ImageView
             android:id="@+id/symbol"
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+
+            />
         <TextView
             android:id="@+id/money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
             android:text="1000000"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:gravity="right"
             android:textSize="@dimen/font_size20"
             android:textColor="@color/colorPayFont"
             />
-    </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

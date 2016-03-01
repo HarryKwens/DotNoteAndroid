@@ -25,6 +25,9 @@ public class Bill_Add_Activity extends AppCompatActivity {
     private EditText describe;
     private EditText createTime;
     private Button submit;
+    private String txtMoney;
+    private String txtDescribe;
+    private String txtCreateTime;
     public DBManager mgr;
 
     @Override
@@ -44,12 +47,25 @@ public class Bill_Add_Activity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean isAdd =  AddBill();
-                if (isAdd){
-                    Toast.makeText(Bill_Add_Activity.this,"添加成功",Toast.LENGTH_LONG).show();
+                //获取控件数据
+                txtMoney = money.getText().toString();
+                txtCreateTime = createTime.getText().toString();
+                txtDescribe = describe.getText().toString();
+
+                boolean b = (txtMoney != null && !txtMoney.equals("")&&txtCreateTime != null &&
+                        !txtCreateTime.equals(""))?true:false;
+                if (b) {
+                    Boolean isAdd = AddBill();
+                    if (isAdd) {
+                        //添加成功后，返回列表页面，并刷新列表页面。
+                        Toast.makeText(Bill_Add_Activity.this, "添加成功", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(Bill_Add_Activity.this, "添加失败", Toast.LENGTH_LONG).show();
+                    }
                 }
-                else{
-                    Toast.makeText(Bill_Add_Activity.this,"添加失败",Toast.LENGTH_LONG).show();
+                else {
+                    Toast.makeText(Bill_Add_Activity.this,"金额和创建时间不能为空，请输入。",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -65,14 +81,13 @@ public class Bill_Add_Activity extends AppCompatActivity {
     private Boolean AddBill(){
         boolean isOk = false;
         Bill bill = new Bill();
-        bill.Money = 2000.0;
-        bill.CreateTime = "2015-01-01";
-        bill.Describe = "123456";
-        bill.LastModifiedTime = "2015-01-01";
+        bill.Money = Double.valueOf(money.getText().toString());
+        bill.CreateTime = createTime.getText().toString();
+        bill.Describe = describe.getText().toString();
+        bill.LastModifiedTime = createTime.getText().toString();
         bill.ExternalId = "11111";
-        bill.TagId = "321";
+        bill.TagId = "123";
         bill.UserId = "22222";
-        bill.BillNo = "001";
         try {
             mgr.addBill(bill);
             isOk = true;
