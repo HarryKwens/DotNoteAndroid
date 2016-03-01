@@ -25,8 +25,8 @@ public class DBManager {
     public void addBill(Bill bill){
         db.beginTransaction();
         try {
-            db.execSQL("INSERT INTO Bill values(?,?,?,?,?,?,?,?)",
-                    new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
+            db.execSQL("INSERT INTO Bill (UserId,Money,CreateTime,LastModifiedTime,ExternalId,TagId,Describe) values (?,?,?,?,?,?,?)",
+                    new Object[]{bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
             db.setTransactionSuccessful();
         }
         finally {
@@ -38,8 +38,8 @@ public class DBManager {
         db.beginTransaction();
         try {
             for (Bill bill : bills) {
-                db.execSQL("INSERT INTO Bill VALUES(null,?,?,?,?,?,?,?,?)",
-                        new Object[]{bill.BillNo,bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
+                db.execSQL("INSERT INTO Bill VALUES(?,?,?,?,?,?,?)",
+                        new Object[]{bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
             }
             db.setTransactionSuccessful();
         }
@@ -76,14 +76,14 @@ public class DBManager {
     /*账单修改*/
     public void updateBill(Bill bill){
         ContentValues cv = new ContentValues();
-        cv.put("BillNo",bill.BillNo);
         cv.put("UserId",bill.UserId);
         cv.put("Money",bill.Money);
         cv.put("CreateTime",bill.CreateTime);
         cv.put("LastModifiedTime",bill.LastModifiedTime);
         cv.put("ExternalId",bill.ExternalId);
         cv.put("TagId", bill.TagId);
-        db.update("Bill", cv, "BillNo = ?", new String[]{bill.BillNo});
+        cv.put("Describe",bill.Describe);
+        db.update("Bill", cv, "_id = ?", new String[]{Integer.toString(bill._id)});
     }
     /*用户修改*/
     public void updateUser(User user){
@@ -106,7 +106,7 @@ public class DBManager {
     public void deleteBill(Bill bill){
         db.beginTransaction();
         try {
-            db.delete("Bill","BillNo = ?",new String[]{bill.BillNo});
+            db.delete("Bill","_id = ?",new String[]{Integer.toString(bill._id)});
             db.setTransactionSuccessful();
         }finally {
             db.endTransaction();
@@ -124,7 +124,7 @@ public class DBManager {
     }
     /*查询全部*/
     public Cursor queryTheCursor(String tableName){
-        Cursor c = db.rawQuery("SELECT * FROM" +tableName,null);
+        Cursor c = db.rawQuery("SELECT * FROM " +tableName,null);
         return c;
     }
     /*查询账单列表*/
@@ -133,12 +133,14 @@ public class DBManager {
         Cursor c = queryTheCursor("Bill");
         while (c.moveToNext()){
             Bill bill = new Bill();
-            bill._id = c.getInt(c.getColumnIndex("id"));
-            bill.BillNo = c.getString(c.getColumnIndex("BillNo"));
+            bill._id = c.getInt(c.getColumnIndex("_id"));
             bill.UserId = c.getString(c.getColumnIndex("UserId"));
             bill.Money = c.getDouble(c.getColumnIndex("Money"));
             bill.CreateTime = c.getString(c.getColumnIndex("CreateTime"));
+            bill.LastModifiedTime = c.getString(c.getColumnIndex("LastModifiedTime"));
+            bill.ExternalId = c.getString(c.getColumnIndex("ExternalId"));
             bill.TagId = c.getString(c.getColumnIndex("TagId"));
+            bill.Describe = c.getString(c.getColumnIndex("Describe"));
             bills.add(bill);
         }
         c.close();

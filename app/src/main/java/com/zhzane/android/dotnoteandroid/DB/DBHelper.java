@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DataBase_Name = "DotNote_DB";
-    private static final int DataBase_Vision = 1;
+    private static final int DataBase_Vision = 4;
 
     public DBHelper(Context context){
         super(context,DataBase_Name,null,DataBase_Vision);
@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //创建账单表（Bill）
         db.execSQL("CREATE TABLE Bill" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,BillNo VARCHAR,UserId VARCHAR,Money DECIMAL,CreateTime VARCHAR," +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,Money DECIMAL,CreateTime VARCHAR," +
                 "LastModifiedTime VARCHAR,ExternalId VARCHAR,TagId VARCHAR)");
         //创建用户表（User）
         db.execSQL("CREATE TABLE User" +
@@ -33,5 +33,10 @@ public class DBHelper extends SQLiteOpenHelper {
     //版本修改时调用
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("ALTER TABLE Bill RENAME TO _Temp_Bill");
+        db.execSQL("CREATE TABLE Bill" +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,Money DECIMAL,CreateTime VARCHAR," +
+                "LastModifiedTime VARCHAR,ExternalId VARCHAR,TagId VARCHAR,Describe VARCHAR)");
+        db.execSQL("DROP TABLE _Temp_Bill");
     }
 }
