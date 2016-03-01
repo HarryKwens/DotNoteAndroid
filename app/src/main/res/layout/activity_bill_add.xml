@@ -120,10 +120,11 @@
             android:layout_marginTop="@dimen/margin_padding20"
             android:text="@string/txtAddBill_Tag"
             android:textSize="16sp" />
+
     </LinearLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/margin_padding10"
         >
     <!-- 完成添加按钮-->

@@ -22,21 +22,20 @@ public class DBHelper extends SQLiteOpenHelper {
         //创建账单表（Bill）
         db.execSQL("CREATE TABLE Bill" +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,Money DECIMAL,CreateTime VARCHAR," +
-                "LastModifiedTime VARCHAR,ExternalId VARCHAR,TagId VARCHAR)");
+                "LastModifiedTime VARCHAR,ExternalId VARCHAR,TagId VARCHAR,Describe VARCHAR)");
         //创建用户表（User）
         db.execSQL("CREATE TABLE User" +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,UserName VARCHAR,TotalMoney DECIMAL,RelatedUserId VARCHAR,MAC VARCHAR)");
         //创建标签表（Tag）
         db.execSQL("CREATE TABLE Tag" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId VARCHAR,TagName VARCHAR)");
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId VARCHAR,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
     }
     //版本修改时调用
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("ALTER TABLE Bill RENAME TO _Temp_Bill");
-        db.execSQL("CREATE TABLE Bill" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,Money DECIMAL,CreateTime VARCHAR," +
-                "LastModifiedTime VARCHAR,ExternalId VARCHAR,TagId VARCHAR,Describe VARCHAR)");
-        db.execSQL("DROP TABLE _Temp_Bill");
+        db.execSQL("ALTER TABLE Tag RENAME TO _Temp_Tag");
+        db.execSQL("CREATE TABLE Tag" +
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId VARCHAR,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
+        db.execSQL("DROP TABLE _Temp_Tag");
     }
 }

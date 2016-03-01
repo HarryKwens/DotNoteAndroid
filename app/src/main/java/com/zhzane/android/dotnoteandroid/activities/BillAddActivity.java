@@ -1,25 +1,39 @@
 
 package com.zhzane.android.dotnoteandroid.activities;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.zhzane.android.dotnoteandroid.DB.Bill;
 import com.zhzane.android.dotnoteandroid.DB.DBManager;
 import com.zhzane.android.dotnoteandroid.R;
 
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class BillAddActivity extends BaseActivity {
 
@@ -32,6 +46,19 @@ public class BillAddActivity extends BaseActivity {
     private String txtMoney;
     private String txtDescribe;
     private String txtCreateTime;
+    private SimpleDateFormat formatter;
+    /**
+     * 时间选择器参数
+     */
+    private int mYear;
+    private int mMonth;
+    private int mDay;
+    private int mHour;
+    private int mMin;
+    private String mm;      //辅助月份参数
+    private String dd;      //辅助日期参数
+    private Date curDate;   //当前日期
+
     public DBManager mgr;
 
     @Override
@@ -53,6 +80,23 @@ public class BillAddActivity extends BaseActivity {
         submit = (Button) findViewById(R.id.btn_BillAdd_Submit);
         mgr = new DBManager(this);
 
+        //点击创建时间文本编辑框弹出时间选择器
+        createTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(0);
+            }
+        });
+
+        createTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    hideIM(v);
+                    showDialog(0);
+                }
+            }
+        });
         //支出/收入按钮
         buttonIsMoneyAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +145,16 @@ public class BillAddActivity extends BaseActivity {
             }
         });
 
-        // 时间选择窗口
         // 设置当前时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        createTime.setText(formatter.format(new Date(System.currentTimeMillis())));
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        curDate = new Date(System.currentTimeMillis());
+        createTime.setText(formatter.format(curDate));
+        //获取当前年月日。
+        Calendar calendar = Calendar.getInstance();
+        mYear = calendar.get(Calendar.YEAR);
+        mMonth = calendar.get(Calendar.MONTH);
+        mDay = calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     @Override
@@ -132,5 +182,71 @@ public class BillAddActivity extends BaseActivity {
             Log.d("AddBill","添加账单失败，错误："+ e.getMessage());
         }
         return isOk;
+    }
+
+    /**
+     * 日期选择器
+     */
+    private DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    mYear = year;
+                    if(monthOfYear<=8)
+                    {
+                        mMonth = monthOfYear+1;
+                        mm="0"+mMonth;
+                    }
+                    else{
+                        mMonth = monthOfYear+1;
+                        mm=String.valueOf(mMonth);
+                    }
+                    if(dayOfMonth<=9)
+                    {
+                        mDay = dayOfMonth;
+                        dd="0"+mDay;
+                    }
+                    else{
+                        mDay = dayOfMonth;
+                        dd=String.valueOf(mDay);
+                    }
+                    mDay = dayOfMonth;
+                    showDialog(1);
+                }
+            };
+    /**
+     * 时间选择器
+     */
+    private TimePickerDialog.OnTimeSetListener mTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    mHour = hourOfDay;
+                    mMin = minute;
+                    createTime.setText(String.valueOf(mYear)+"-"+mm+"-"+dd+" "+String.valueOf(mHour)+":"+String.valueOf(mMin));
+                }
+            };
+
+    //日期，时间选择器界面显示
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case 0:
+                return new DatePickerDialog(this, mDateSetListener, mYear, mMonth, mDay);
+            case 1:
+                return new TimePickerDialog(this, mTimeSetListener, mHour, mMin, true);
+        }
+        return null;
+    }
+
+    // 隐藏手机键盘
+    private void hideIM(View edt){
+        try {
+            InputMethodManager im = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            IBinder windowToken = edt.getWindowToken();
+            if(windowToken != null) {
+                im.hideSoftInputFromWindow(windowToken, 0);
+            }
+        }
+        catch (Exception e) {
+        }
     }
 }
