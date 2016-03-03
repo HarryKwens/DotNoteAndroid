@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DataBase_Name = "DotNote_DB";
-    private static final int DataBase_Vision = 4;
+    private static final int DataBase_Vision = 5;
 
     public DBHelper(Context context){
         super(context,DataBase_Name,null,DataBase_Vision);
@@ -28,14 +28,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId VARCHAR,UserName VARCHAR,TotalMoney DECIMAL,RelatedUserId VARCHAR,MAC VARCHAR)");
         //创建标签表（Tag）
         db.execSQL("CREATE TABLE Tag" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId VARCHAR,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId INTEGER,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
     }
     //版本修改时调用
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("ALTER TABLE Tag RENAME TO _Temp_Tag");
         db.execSQL("CREATE TABLE Tag" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId VARCHAR,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId INTEGER,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
         db.execSQL("DROP TABLE _Temp_Tag");
     }
 }
