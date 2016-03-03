@@ -38,7 +38,7 @@ public class DBManager {
         db.beginTransaction();
         try {
             for (Bill bill : bills) {
-                db.execSQL("INSERT INTO Bill VALUES(?,?,?,?,?,?,?)",
+                db.execSQL("INSERT INTO Bill (UserId,Money,CreateTime,LastModifiedTime,ExternalId,TagId,Describe) values (?,?,?,?,?,?,?)",
                         new Object[]{bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
             }
             db.setTransactionSuccessful();
@@ -48,11 +48,24 @@ public class DBManager {
         }
     }
     /*添加用户*/
+    public void addUser(User user){
+        db.beginTransaction();
+        try {
+            db.execSQL("INSERT INTO User (UserId,UserName,TotalMoney,RelatedUserId,MAC) VALUES(?,?,?,?,?)",
+                    new Object[]{user.UserId, user.UserName, user.TotalMoney, user.RelatedUserId, user.MAC});
+            db.setTransactionSuccessful();
+        }
+        finally {
+            db.endTransaction();
+        }
+    }
+
     public void addUser(List<User> users){
         db.beginTransaction();
         try {
             for (User user : users) {
-                db.execSQL("INSERT INTO User VALUES(null,?,?,?,?,?)",new Object[]{user.UserId,user.UserName,user.TotalMoney,user.RelatedUserId,user.MAC});
+                db.execSQL("INSERT INTO User (UserId,UserName,TotalMoney,RelatedUserId,MAC) VALUES(?,?,?,?,?)",
+                        new Object[]{user.UserId,user.UserName,user.TotalMoney,user.RelatedUserId,user.MAC});
             }
             db.setTransactionSuccessful();
         }
@@ -61,11 +74,24 @@ public class DBManager {
         }
     }
     /*添加标签*/
+    public void addTag(Tag tag){
+        db.beginTransaction();
+        try {
+            db.execSQL("INSERT INTO Tag (TagName,UseNum,Describe) VALUES(?,?,?,?)",
+                    new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe});
+            db.setTransactionSuccessful();
+        }
+        finally {
+            db.endTransaction();
+        }
+    }
+
     public void addTag(List<Tag> tags){
         db.beginTransaction();
         try {
             for (Tag tag : tags) {
-                db.execSQL("INSERT INTO User VALUES(null,?,?)",new Object[]{tag.TagId,tag.TagName});
+                db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe) VALUES(?,?,?,?)",
+                        new Object[]{tag.TagId,tag.TagName,tag.UseNum,tag.Describe});
             }
             db.setTransactionSuccessful();
         }
@@ -100,7 +126,9 @@ public class DBManager {
         ContentValues cv = new ContentValues();
         cv.put("TagID",tag.TagId);
         cv.put("TagName",tag.TagName);
-        db.update("Tag",cv,"TagId = ?", new String[]{tag.TagId});
+        cv.put("UseNum",tag.UseNum);
+        cv.put("Describe",tag.Describe);
+        db.update("Tag",cv,"TagId = ?", new String[]{Integer.toString(tag.TagId)});
     }
     /*删除账单*/
     public void deleteBill(Bill bill){
@@ -125,6 +153,11 @@ public class DBManager {
     /*查询全部*/
     public Cursor queryTheCursor(String tableName){
         Cursor c = db.rawQuery("SELECT * FROM " +tableName,null);
+        return c;
+    }
+
+    public Cursor queryTheCursor(String tableName,String whereStr){
+        Cursor c = db.rawQuery("SELECT * FROM " +tableName + " ORDER BY "+whereStr,null);
         return c;
     }
     /*查询账单列表*/
@@ -166,11 +199,13 @@ public class DBManager {
     /*查询标签列表*/
     public List<Tag> queryTag(){
         ArrayList<Tag> tags = new ArrayList<Tag>();
-        Cursor c = queryTheCursor("Tag");
+        Cursor c = queryTheCursor("Tag","UseNum");
         while (c.moveToNext()){
             Tag tag = new Tag();
-            tag.TagId = c.getString(c.getColumnIndex("TagId"));
+            tag.TagId = c.getInt(c.getColumnIndex("TagId"));
             tag.TagName = c.getString(c.getColumnIndex("TagName"));
+            tag.UseNum = c.getInt(c.getColumnIndex("UseNum"));
+            tag.Describe = c.getString(c.getColumnIndex("Describe"));
             tags.add(tag);
         }
         c.close();

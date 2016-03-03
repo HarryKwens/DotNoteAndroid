@@ -20,6 +20,15 @@
     <string name="awesome_cloud">\uf0c2</string>
     <string name="awesome_tags">\uf02c</string>
     <string name="awesome_minus">\uf068</string>
+    <string name="awesome_tag_medical">\uf0f9</string>
+    <string name="awesome_tag_shopping">\uf07a</string>
+    <string name="awesome_tag_traffic">\uf072</string>
+    <string name="awesome_tag_coffee">\uf0f4</string>
+    <string name="awesome_tag_book">\uf02d</string>
+    <string name="awesome_tag_phone">\uf10b</string>
+    <string name="awesome_tag_film">\uf008</string>
+    <string name="awesome_tag_bar">\uf000</string>
+    <string name="awesome_tag_showAll">\uf063</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

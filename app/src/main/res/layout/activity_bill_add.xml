@@ -48,9 +48,9 @@
                 android:layout_width="@dimen/editText_height"
                 android:layout_height="@dimen/editText_height"
                 android:background="@drawable/rounded_editext"
+                android:text="@string/awesome_minus"
                 android:textColor="@color/colorMoneyDecrease"
-                android:textSize="24sp"
-                android:text="@string/awesome_minus"/>
+                android:textSize="24sp" />
             <!-- 输入金额，币制待定-->
             <EditText
                 android:id="@+id/edtxt_BillAdd_Money"
@@ -60,13 +60,13 @@
                 android:background="@drawable/rounded_editext"
                 android:drawablePadding="8dp"
                 android:drawableRight="@drawable/ic_notifications_black_24dp"
+                android:hint="金额"
+                android:inputType="numberDecimal"
                 android:paddingLeft="20sp"
                 android:paddingRight="10sp"
-                android:hint="金额"
                 android:singleLine="true"
                 android:textColor="@color/colorMoneyDecrease"
-                android:textSize="24sp"
-                android:inputType="numberDecimal" />
+                android:textSize="24sp" />
 
         </LinearLayout>
         <!-- 账单创建时间-->
@@ -78,8 +78,8 @@
             android:text="@string/txtAddBill_CreateTime"
             android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/edtxt_BillAdd_CreateTime"
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeButton
+            android:id="@+id/bill_Add_button_CreateTime"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
@@ -107,9 +107,9 @@
             android:background="@drawable/rounded_editext"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
+            android:hint="@string/txtAddBill_hint_decribe"
             android:paddingLeft="10sp"
             android:paddingRight="10sp"
-            android:hint="@string/txtAddBill_hint_decribe"
             android:singleLine="true"
             android:textColor="#222222" />
         <!-- 标签 （待研究）-->
@@ -120,24 +120,34 @@
             android:layout_marginTop="@dimen/margin_padding20"
             android:text="@string/txtAddBill_Tag"
             android:textSize="16sp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+                <LinearLayout
+                    android:id="@+id/bill_add_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                </LinearLayout>
+        </ScrollView>
     </LinearLayout>
+
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_padding10"
-        >
-    <!-- 完成添加按钮-->
-    <Button
-        android:id="@+id/btn_BillAdd_Submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:text="@string/txtAddBill_submit"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp"
-        android:background="@color/colorPrimaryDark"
-        />
+        android:layout_gravity="bottom"
+        android:padding="@dimen/margin_padding10">
+        <!-- 完成添加按钮-->
+        <Button
+            android:id="@+id/btn_BillAdd_Submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/txtAddBill_submit"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

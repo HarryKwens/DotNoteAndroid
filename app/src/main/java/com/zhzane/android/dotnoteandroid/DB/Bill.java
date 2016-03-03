@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class Bill {
     public int _id;
-    public String BillNo;
+//    public String BillNo;
     public String UserId;
     public Double Money;
     public String CreateTime;
@@ -29,9 +29,9 @@ public class Bill {
 
     public Bill(){}
 
-    public Bill(int id, String billNo, String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId,String describe) {
+    public Bill(int id,String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId,String describe) {
         this._id = id;
-        BillNo = billNo;
+//        BillNo = billNo;
         UserId = userId;
         Money = money;
         CreateTime = createTime;
@@ -49,19 +49,19 @@ public class Bill {
         this._id = id;
     }
 
-    public String getBillNo() {
-        return BillNo;
-    }
-
-    public void setBillNo(String billNo) {
-        String regex ="^[A-Za-z0-9]+$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(billNo);
-        boolean rs = matcher.matches();
-        if (rs){
-            BillNo = billNo;
-        }
-    }
+//    public String getBillNo() {
+//        return BillNo;
+//    }
+//
+//    public void setBillNo(String billNo) {
+//        String regex ="^[A-Za-z0-9]+$";
+//        Pattern pattern = Pattern.compile(regex);
+//        Matcher matcher = pattern.matcher(billNo);
+//        boolean rs = matcher.matches();
+//        if (rs){
+//            BillNo = billNo;
+//        }
+//    }
 
     public String getUserId() {
         return UserId;

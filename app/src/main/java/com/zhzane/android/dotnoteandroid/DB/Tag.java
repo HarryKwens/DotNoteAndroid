@@ -13,17 +13,38 @@ import java.util.regex.Pattern;
  */
 public class Tag {
     public int _id;
-    public String TagId;
+    public int TagId;
     public String TagName;
+    public int UseNum;
+    public String Describe;
     public ArrayList<String> IdList;
 
     public Tag() {
     }
 
-    public Tag(int id, String tagId, String tagName) {
+    public int getUseNum() {
+        return UseNum;
+    }
+
+    public void setUseNum(int useNum) {
+        UseNum = useNum;
+    }
+
+    public String getDescribe() {
+        return Describe;
+    }
+
+    public void setDescribe(String describe) {
+        Describe = describe;
+    }
+
+    public Tag(int id, int tagId, String tagName,int userNum,String describe) {
         this._id = id;
         TagId = tagId;
         TagName = tagName;
+        UseNum = userNum;
+        Describe = describe;
+
     }
 
     public int getId() {
@@ -34,17 +55,17 @@ public class Tag {
         this._id = id;
     }
 
-    public String getTagId() {
+    public int getTagId() {
         return TagId;
     }
 
-    public void setTagId(String tagId) {
+    public void setTagId(int tagId) {
         String regex = "^[0-9]{3}$";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(tagId);
+        Matcher matcher = pattern.matcher(tagId+"");
         boolean rs = matcher.matches();
         if (rs) {
-            IdList.add(tagId);  //设置每个TagId时把Id加入IdList保存起来。便于后续操作。
+            IdList.add(tagId+"");  //设置每个TagId时把Id加入IdList保存起来。便于后续操作。
             TagId = tagId;
         }
     }
