@@ -32,6 +32,7 @@ public class BillActivity extends BaseActivity {
     private SimpleAdapter sim_adapter;      //数据适配器
     private List<Map<String,Object>> dataList;      //数据源
     private Button btnAdd;      //添加账单按钮
+    private TextView btnPerson; //进入个人中心
     public DBManager mgr;
 
 
@@ -54,11 +55,21 @@ public class BillActivity extends BaseActivity {
         setListView();
 
         //点击圆形添加按钮跳转到添加账单页面
-        btnAdd = (Button)findViewById(R.id.view_circle_button);
+        btnAdd = (Button) findViewById(R.id.view_circle_button);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BillActivity.this, BillAddActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //进入个人中心
+        btnPerson = (TextView) findViewById(R.id.nav_btn_person);
+        btnPerson.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BillActivity.this, PersonActivity.class);
                 startActivity(intent);
             }
         });

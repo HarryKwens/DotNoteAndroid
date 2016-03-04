@@ -19,15 +19,15 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
-            <TextView
+            <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Test"/>
+                android:gravity="center_vertical|left"
+                android:text="@string/nav_awesome_back"/>
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-
     <include layout="@layout/content_statistics" />
 
 </android.support.design.widget.CoordinatorLayout>

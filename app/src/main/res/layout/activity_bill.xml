@@ -20,8 +20,10 @@
             android:background="?attr/colorPrimary">
 
             <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/nav_btn_person"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:text="@string/awesome_user"
                 android:textSize="20sp"
                 android:textColor="@color/colorWhite"/>
@@ -31,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#fff"
+                android:textColor="@color/colorWhite"
                 android:text="@string/title"
                 android:textSize="20sp" />
 
