@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DataBase_Name = "DotNote_DB";
-    private static final int DataBase_Vision = 5;
+    private static final int DataBase_Vision = 6;
 
     public DBHelper(Context context){
         super(context,DataBase_Name,null,DataBase_Vision);

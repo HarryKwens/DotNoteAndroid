@@ -14,6 +14,12 @@
     <string name="txtAddBill_submit">完成添加</string>
     <!-- Strings related to Settings -->
 
+    <!-- 添加标签页面-->
+    <string name="add_tag_tagname">标签名称</string>
+    <string name="add_tag_describe">标签备注</string>
+    <string name="add_tag_tagname_hint">请输入不超过4个字的名称</string>
+    <string name="add_tag_describe_hint">请输入不超过16个字的备注</string>
+
     <!-- Image Font -->
     <string name="awesome_plus">\uf067</string>
     <string name="awesome_user">\uf007</string>
