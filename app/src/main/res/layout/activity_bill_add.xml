@@ -111,7 +111,9 @@
             android:paddingLeft="10sp"
             android:paddingRight="10sp"
             android:singleLine="true"
-            android:textColor="#222222" />
+            android:textColor="#222222"
+            android:maxLength="16"
+            />
         <!-- 标签 （待研究）-->
         <TextView
             android:id="@+id/txt_BillAdd_Tag"

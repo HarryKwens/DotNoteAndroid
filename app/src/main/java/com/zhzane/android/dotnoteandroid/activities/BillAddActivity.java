@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.print.PrintAttributes;
@@ -64,6 +65,7 @@ public class BillAddActivity extends BaseActivity {
     private SimpleDateFormat formatter;
     private List<Tag> tagList;
     private List<String> tagIdList;
+    private LinearLayout layout;
     /**
      * 时间选择器参数
      */
@@ -99,6 +101,7 @@ public class BillAddActivity extends BaseActivity {
         createTime = (AwesomeButton) findViewById(R.id.bill_Add_button_CreateTime);
         buttonIsMoneyAdd = (Button) findViewById(R.id.bill_add_button_is_add);
         submit = (Button) findViewById(R.id.btn_BillAdd_Submit);
+        layout = (LinearLayout) findViewById(R.id.bill_add_layout);
         mgr = new DBManager(this);
 
         //点击创建时间文本编辑框弹出时间选择器
@@ -184,11 +187,25 @@ public class BillAddActivity extends BaseActivity {
         setTagButton();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mgr.CloseDB();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isDisAllClick = false;
+        layout.removeAllViews();
+        getTagList();
+        setTagButton();
+    }
+
     /**
      * 设置标签按钮方法。使用代码动态生成控件。
      */
     private void setTagButton() {
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.bill_add_layout);
 
         double LinRow = 1;      //记录需要创建标签的总行数，每行最多5个标签。
         int mCount = 0;         //记录生成标签的个数。
@@ -199,9 +216,10 @@ public class BillAddActivity extends BaseActivity {
          * 当显示全部的按钮处于按下的状态，则进行行数计算。
          * 如果数据条数为5的倍数，则增加1行，给“添加标签”按钮提供容器。
          */
-        if (tagList.size() > 5) {
             if (!isDisAllClick) {
-                LinRow = 2;
+                if (tagList.size() >= 5) {
+                    LinRow = 2;
+                }
             }else {
                 LinRow = Math.ceil(tagList.size()/ 5.0);
                 if (tagList.size()%5==0)
@@ -209,7 +227,7 @@ public class BillAddActivity extends BaseActivity {
                     LinRow += 1;
                 }
             }
-        }
+
         /**
          * 循环生成控件，外层循环生成LinearLayout，生成的个数由LinRow决定。每个LinearLayout中有5个标签
          * 内层循环生成标签控件。
@@ -284,6 +302,13 @@ public class BillAddActivity extends BaseActivity {
                     tv.setId(-1);
                     tv.setText(R.string.awesome_plus);
                     linearLayout.addView(tv);
+                    tv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(BillAddActivity.this,TagAddActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
                 mCount++;
             }
@@ -291,11 +316,6 @@ public class BillAddActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mgr.CloseDB();
-    }
     /**
      *获取Tag标签数据，当数据库不存在数据时，添加几条默认数据。
      */
@@ -327,6 +347,7 @@ public class BillAddActivity extends BaseActivity {
             sb.append(tagIdStr);
             sb.append(",");
         }
+
         boolean isOk = false;
         Bill bill = new Bill();
         bill.Money = Double.valueOf(money.getText().toString());

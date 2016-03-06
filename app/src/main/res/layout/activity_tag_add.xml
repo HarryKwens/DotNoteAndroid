@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context="com.zhzane.android.dotnoteandroid.activities.TagAddActivity">
+
+    <!-- ToolBar标题栏-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:navigationIcon="?attr/homeAsUpIndicator">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/txtAddBill_title"
+            android:textColor="@color/colorWhite"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_tag_tagname"
+            android:textSize="@dimen/font_size20" />
+
+        <EditText
+            android:id="@+id/tag_add_editText_tagName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:background="@drawable/rounded_editext"
+            android:maxLength="4"
+            android:hint="@string/add_tag_tagname_hint"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_tag_describe"
+            android:textSize="@dimen/font_size20"
+            android:layout_marginTop="@dimen/margin_padding20"
+            />
+
+        <EditText
+            android:id="@+id/tag_add_editText_describe"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:background="@drawable/rounded_editext"
+            android:maxLength="16"
+            android:hint="@string/add_tag_describe_hint"
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:padding="@dimen/margin_padding10">
+        <!-- 完成添加按钮-->
+        <Button
+            android:id="@+id/tag_add_button_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/txtAddBill_submit"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</LinearLayout>

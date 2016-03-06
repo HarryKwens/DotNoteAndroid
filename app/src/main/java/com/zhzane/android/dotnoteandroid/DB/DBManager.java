@@ -77,7 +77,7 @@ public class DBManager {
     public void addTag(Tag tag){
         db.beginTransaction();
         try {
-            db.execSQL("INSERT INTO Tag (TagName,UseNum,Describe) VALUES(?,?,?,?)",
+            db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe) VALUES(?,?,?,?)",
                     new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe});
             db.setTransactionSuccessful();
         }
