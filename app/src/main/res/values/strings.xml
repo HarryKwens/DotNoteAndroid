@@ -27,6 +27,7 @@
     <string name="awesome_cloud">\uf0c2</string>
     <string name="awesome_tags">\uf02c</string>
     <string name="awesome_minus">\uf068</string>
+    <string name="awesome_edit">\uf044</string>
     <string name="awesome_tag_medical">\uf0f9</string>
     <string name="awesome_tag_shopping">\uf07a</string>
     <string name="awesome_tag_traffic">\uf072</string>
@@ -39,6 +40,10 @@
 
     <!-- Nav -->
     <string name="nav_awesome_back">\uf104 返回</string>
+
+    <!-- Person -->
+    <string name="person_text_username">用户名</string>
+    <string name="person_text_mac">MAC</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>

@@ -1,37 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zhzane.android.dotnoteandroid.activities.PersonActivity">
+    android:orientation="vertical">
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
+        android:layout_height="200dp"
+        android:background="@color/colorPrimary">
 
         <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
             android:id="@+id/btn_nav_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_gravity="center_vertical|left"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/nav_awesome_back"
             android:textSize="16sp"
             android:textColor="@color/colorWhite"/>
 
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/title_activity_person"
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/awesome_user"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:textSize="42sp"
+            android:background="@drawable/activity_person_face"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true" />
 
-    </android.support.v7.widget.Toolbar>
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+            android:id="@+id/btn_nav_edit"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical|left"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/awesome_edit"
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite"/>
+    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/person_text_username"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="username"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="MAC"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/text_mac"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="mac"
+            android:textSize="18sp"/>
+    </LinearLayout>
 
 </LinearLayout>

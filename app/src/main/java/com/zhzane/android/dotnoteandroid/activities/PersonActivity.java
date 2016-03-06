@@ -1,5 +1,8 @@
 package com.zhzane.android.dotnoteandroid.activities;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,14 +17,12 @@ import com.zhzane.android.dotnoteandroid.R;
 public class PersonActivity extends BaseActivity {
 
     private TextView btnBack;
+    private TextView textMac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         btnBack = (TextView) findViewById(R.id.btn_nav_back);
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -30,6 +31,15 @@ public class PersonActivity extends BaseActivity {
                 finish();
             }
         });
+
+        textMac = (TextView) findViewById(R.id.text_mac);
+        textMac.setText(getLocalMacAddress());
+    }
+
+    public String getLocalMacAddress() {
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        return info.getMacAddress();
     }
 
 }
