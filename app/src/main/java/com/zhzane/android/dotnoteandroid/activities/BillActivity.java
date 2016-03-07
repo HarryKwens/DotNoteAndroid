@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.zhzane.android.dotnoteandroid.DB.Bill;
 import com.zhzane.android.dotnoteandroid.DB.DBManager;
+import com.zhzane.android.dotnoteandroid.DB.User;
 import com.zhzane.android.dotnoteandroid.R;
 
 import java.text.SimpleDateFormat;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="修改用户名称"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/font_size18"
+        />
+
+    <EditText
+        android:id="@+id/user_edit_editText_username"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
+        android:maxLength="16"
+        android:hint="输入用户名"
+        />
+
+</LinearLayout>
