@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.zhzane.android.dotnoteandroid.DB.Bill;
 import com.zhzane.android.dotnoteandroid.DB.DBManager;
 import com.zhzane.android.dotnoteandroid.DB.Tag;
+import com.zhzane.android.dotnoteandroid.DB.User;
 import com.zhzane.android.dotnoteandroid.R;
 import com.zhzane.android.dotnoteandroid.component.awesome.AwesomeButton;
 import com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView;
@@ -66,6 +67,8 @@ public class BillAddActivity extends BaseActivity {
     private List<Tag> tagList;
     private List<String> tagIdList;
     private LinearLayout layout;
+    private User Currentuser;   //当前用户
+
     /**
      * 时间选择器参数
      */
@@ -167,6 +170,8 @@ public class BillAddActivity extends BaseActivity {
                 }
             }
         });
+        //获取当前用户信息
+        getCurrentuser();
 
         // 设置当前时间
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -216,17 +221,16 @@ public class BillAddActivity extends BaseActivity {
          * 当显示全部的按钮处于按下的状态，则进行行数计算。
          * 如果数据条数为5的倍数，则增加1行，给“添加标签”按钮提供容器。
          */
-            if (!isDisAllClick) {
-                if (tagList.size() >= 5) {
-                    LinRow = 2;
-                }
-            }else {
-                LinRow = Math.ceil(tagList.size()/ 5.0);
-                if (tagList.size()%5==0)
-                {
-                    LinRow += 1;
-                }
+        if (!isDisAllClick) {
+            if (tagList.size() >= 5) {
+                LinRow = 2;
             }
+        } else {
+            LinRow = Math.ceil(tagList.size() / 5.0);
+            if (tagList.size() % 5 == 0) {
+                LinRow += 1;
+            }
+        }
 
         /**
          * 循环生成控件，外层循环生成LinearLayout，生成的个数由LinRow决定。每个LinearLayout中有5个标签
@@ -305,7 +309,7 @@ public class BillAddActivity extends BaseActivity {
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(BillAddActivity.this,TagAddActivity.class);
+                            Intent intent = new Intent(BillAddActivity.this, TagAddActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -317,17 +321,17 @@ public class BillAddActivity extends BaseActivity {
     }
 
     /**
-     *获取Tag标签数据，当数据库不存在数据时，添加几条默认数据。
+     * 获取Tag标签数据，当数据库不存在数据时，添加几条默认数据。
      */
-    private void getTagList(){
+    private void getTagList() {
         tagList = mgr.queryTag();
-        if (tagList.size()<1){
+        if (tagList.size() < 1) {
             List<String> tagStr = new ArrayList<String>();
             tagStr.add(getResources().getString(R.string.awesome_tag_bar));
             tagStr.add(getResources().getString(R.string.awesome_tag_book));
             tagStr.add(getResources().getString(R.string.awesome_tag_coffee));
             tagStr.add(getResources().getString(R.string.awesome_tag_film));
-            for (int i=0;i<tagStr.size();i++){
+            for (int i = 0; i < tagStr.size(); i++) {
                 Tag tag = new Tag();
                 tag.TagId = i;
                 tag.TagName = tagStr.get(i);
@@ -338,12 +342,25 @@ public class BillAddActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 获取当前用户信息。
+     *
+     * @return
+     */
+    public void getCurrentuser() {
+        List<User> currentUser = mgr.queryCurrentUser();
+        if (currentUser.size() > 0) {
+            Currentuser = currentUser.get(0);
+        }
+    }
+
+
     //测试--添加账单
     private Boolean AddBill() {
 
         //获取标签TagId,以逗号分隔进行拼接。
         StringBuilder sb = new StringBuilder();
-        for (String tagIdStr : tagIdList){
+        for (String tagIdStr : tagIdList) {
             sb.append(tagIdStr);
             sb.append(",");
         }
@@ -356,7 +373,8 @@ public class BillAddActivity extends BaseActivity {
         bill.LastModifiedTime = createTime.getText().toString();
         bill.ExternalId = "11111";
         bill.TagId = sb.toString();
-        bill.UserId = "22222";
+        bill.UserId = (Integer.toString(Currentuser.UserId) == null || Integer.toString(Currentuser.UserId) == "")
+                ? "" : Integer.toString(Currentuser.UserId);
         try {
             mgr.addBill(bill);
             isOk = true;

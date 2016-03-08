@@ -119,7 +119,7 @@ public class DBManager {
         cv.put("TotalMoney",user.TotalMoney);
         cv.put("RelatedUserId",user.RelatedUserId);
         cv.put("MAC",user.MAC);
-        db.update("User",cv,"UserId = ?",new String[]{user.UserId});
+        db.update("User", cv, "MAC = ?", new String[]{user.MAC});
     }
     /*标签修改*/
     public void updateTag(Tag tag){
@@ -128,7 +128,7 @@ public class DBManager {
         cv.put("TagName",tag.TagName);
         cv.put("UseNum",tag.UseNum);
         cv.put("Describe",tag.Describe);
-        db.update("Tag",cv,"TagId = ?", new String[]{Integer.toString(tag.TagId)});
+        db.update("Tag", cv, "TagId = ?", new String[]{Integer.toString(tag.TagId)});
     }
     /*删除账单*/
     public void deleteBill(Bill bill){
@@ -144,7 +144,7 @@ public class DBManager {
     public void deleteUser(User user){
         db.beginTransaction();
         try {
-            db.delete("User","UserId = ?",new String[]{user.UserId});
+            db.delete("User","UserId = ?",new String[]{Integer.toString(user.UserId)});
             db.setTransactionSuccessful();
         }finally {
             db.endTransaction();
@@ -153,6 +153,11 @@ public class DBManager {
     /*查询全部*/
     public Cursor queryTheCursor(String tableName){
         Cursor c = db.rawQuery("SELECT * FROM " +tableName,null);
+        return c;
+    }
+
+    public Cursor queryTheCursorByWhere(String tableName,String column,String where){
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName + " WHERE " + column + " = ?",new String[]{where});
         return c;
     }
 
@@ -180,13 +185,30 @@ public class DBManager {
         return bills;
     }
     /*查询用户列表*/
-    public List<User> queryUser(){
+    public List<User> queryCurrentUser(){
+        ArrayList<User> users = new ArrayList<User>();
+        Cursor c = queryTheCursorByWhere("User","UserId","1");
+        while (c.moveToNext()){
+            User user = new User();
+            user._id = c.getInt(c.getColumnIndex("_id"));
+            user.UserId = c.getInt(c.getColumnIndex("UserId"));
+            user.UserName = c.getString(c.getColumnIndex("UserName"));
+            user.TotalMoney = c.getDouble(c.getColumnIndex("TotalMoney"));
+            user.RelatedUserId = c.getString(c.getColumnIndex("RelatedUserId"));
+            user.MAC = c.getString(c.getColumnIndex("MAC"));
+            users.add(user);
+        }
+        c.close();
+        return users;
+    }
+
+    public List<User> queryUser() {
         ArrayList<User> users = new ArrayList<User>();
         Cursor c = queryTheCursor("User");
         while (c.moveToNext()){
             User user = new User();
-            user._id = c.getInt(c.getColumnIndex("id"));
-            user.UserId = c.getString(c.getColumnIndex("UserId"));
+            user._id = c.getInt(c.getColumnIndex("_id"));
+            user.UserId = c.getInt(c.getColumnIndex("UserId"));
             user.UserName = c.getString(c.getColumnIndex("UserName"));
             user.TotalMoney = c.getDouble(c.getColumnIndex("TotalMoney"));
             user.RelatedUserId = c.getString(c.getColumnIndex("RelatedUserId"));

@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class User {
     public int _id;
-    public String UserId;
+    public int UserId;
     public String UserName;
     public Double TotalMoney;
     public String RelatedUserId;
@@ -24,7 +24,7 @@ public class User {
 
     public User(){}
 
-    public User(int id, String userId, String userName, Double totalMoney, String relatedUserId, String MAC) {
+    public User(int id, int userId, String userName, Double totalMoney, String relatedUserId, String MAC) {
         this._id = id;
         UserId = userId;
         UserName = userName;
@@ -41,14 +41,14 @@ public class User {
         this._id = id;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return UserId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         String regex ="^[A-Za-z0-9]+$";
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(userId);
+        Matcher matcher = pattern.matcher(String.valueOf(userId));
         boolean rs = matcher.matches();
         if (rs){
         UserId = userId;
