@@ -67,7 +67,7 @@ public class BillAddActivity extends BaseActivity {
     private List<Tag> tagList;
     private List<String> tagIdList;
     private LinearLayout layout;
-    private User Currentuser;   //当前用户
+//    private User Currentuser;   //当前用户
 
     /**
      * 时间选择器参数
@@ -171,7 +171,7 @@ public class BillAddActivity extends BaseActivity {
             }
         });
         //获取当前用户信息
-        getCurrentuser();
+//        getCurrentuser();
 
         // 设置当前时间
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -342,17 +342,17 @@ public class BillAddActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 获取当前用户信息。
-     *
-     * @return
-     */
-    public void getCurrentuser() {
-        List<User> currentUser = mgr.queryCurrentUser();
-        if (currentUser.size() > 0) {
-            Currentuser = currentUser.get(0);
-        }
-    }
+//    /**
+//     * 获取当前用户信息。
+//     *
+//     * @return
+//     */
+//    public void getCurrentuser() {
+//        List<User> currentUser = mgr.queryCurrentUser();
+//        if (currentUser.size() > 0) {
+//            Currentuser = currentUser.get(0);
+//        }
+//    }
 
 
     //测试--添加账单
@@ -373,8 +373,8 @@ public class BillAddActivity extends BaseActivity {
         bill.LastModifiedTime = createTime.getText().toString();
         bill.ExternalId = "11111";
         bill.TagId = sb.toString();
-        bill.UserId = (Integer.toString(Currentuser.UserId) == null || Integer.toString(Currentuser.UserId) == "")
-                ? "" : Integer.toString(Currentuser.UserId);
+        bill.UserId = (Integer.toString(mgr.currentUser.UserId) == null || Integer.toString(mgr.currentUser.UserId) == "")
+                ? "" : Integer.toString(mgr.currentUser.UserId);
         try {
             mgr.addBill(bill);
             isOk = true;
