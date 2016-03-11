@@ -1,12 +1,18 @@
 package com.zhzane.android.dotnoteandroid.DB;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by KWENS on 2016/2/16.
  * 账单实体类。在setter中对数据进行格式验证。
+ *
  * @id 自增列ID；
  * @BillNo 账单计数，记录第N笔账单。
  * @UserID 账单所属用户Id。
@@ -18,7 +24,7 @@ import java.util.regex.Pattern;
  */
 public class Bill {
     public int _id;
-//    public String BillNo;
+    //    public String BillNo;
     public String UserId;
     public Double Money;
     public String CreateTime;
@@ -27,9 +33,10 @@ public class Bill {
     public String TagId;
     public String Describe;
 
-    public Bill(){}
+    public Bill() {
+    }
 
-    public Bill(int id,String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId,String describe) {
+    public Bill(int id, String userId, Double money, String createTime, String lastModifiedTime, String externalId, String tagId, String describe) {
         this._id = id;
 //        BillNo = billNo;
         UserId = userId;
@@ -76,11 +83,11 @@ public class Bill {
     }
 
     public void setMoney(Double money) {
-        String regex ="^-[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*|[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*$";
+        String regex = "^-[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*|[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(Double.toString(money));
         boolean rs = matcher.matches();
-        if (rs){
+        if (rs) {
             Money = money;
         }
     }
@@ -90,11 +97,11 @@ public class Bill {
     }
 
     public void setCreateTime(String createTime) {
-        String regex ="^[A-Za-z0-9]+$";
+        String regex = "^[A-Za-z0-9]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(createTime);
         boolean rs = matcher.matches();
-        if (rs){
+        if (rs) {
             CreateTime = createTime;
         }
     }
@@ -120,26 +127,41 @@ public class Bill {
     }
 
     public void setExternalId(String externalId) {
-        String regex ="^[A-Za-z0-9]+$";
+        String regex = "^[A-Za-z0-9]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(externalId);
         boolean rs = matcher.matches();
-        if (rs){
+        if (rs) {
             ExternalId = externalId;
         }
     }
+
     public String getDescribe() {
         return Describe;
     }
 
     public void setDescribe(String describe) {
-        String regex ="^[A-Za-z0-9]+$";
+        String regex = "^[A-Za-z0-9]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(describe);
         boolean rs = matcher.matches();
-        if (rs){
+        if (rs) {
             Describe = describe;
         }
     }
 
+    public String toJSON(String userId) throws JSONException {
+        JSONObject json = new JSONObject();
+        if (userId.equals(UserId)) {
+            json.put("UserId", userId);
+            json.put("Money", Money);
+            json.put("CreateTime", CreateTime);
+            json.put("LastModifiedTime", LastModifiedTime);
+            json.put("ExternalId", ExternalId);
+            json.put("TagId", TagId);
+            json.put("Describe", Describe);
+        }
+        return json.toString();
+
+    }
 }

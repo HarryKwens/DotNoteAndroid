@@ -19,6 +19,10 @@ import com.zhzane.android.dotnoteandroid.DB.DBManager;
 import com.zhzane.android.dotnoteandroid.DB.User;
 import com.zhzane.android.dotnoteandroid.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +35,7 @@ public class BillActivity extends BaseActivity {
 
     private ListView listView;      //账单列表
     private SimpleAdapter sim_adapter;      //数据适配器
-    private List<Map<String,Object>> dataList;      //数据源
+    private List<Map<String, Object>> dataList;      //数据源
     private Button btnAdd;      //添加账单按钮
     private TextView btnPerson; //进入个人中心
     public DBManager mgr;
@@ -48,12 +52,16 @@ public class BillActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         //绑定listView控件
-        listView = (ListView)findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         mgr = new DBManager(this);
 
-        dataList = new ArrayList<Map<String,Object>>();
+        dataList = new ArrayList<Map<String, Object>>();
         //调用设置listView数据
-        setListView();
+        try {
+            setListView();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //点击圆形添加按钮跳转到添加账单页面
         btnAdd = (Button) findViewById(R.id.view_circle_button);
@@ -67,7 +75,7 @@ public class BillActivity extends BaseActivity {
 
         //进入个人中心
         btnPerson = (TextView) findViewById(R.id.nav_btn_person);
-        btnPerson.setOnClickListener(new View.OnClickListener(){
+        btnPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BillActivity.this, PersonActivity.class);
@@ -85,8 +93,13 @@ public class BillActivity extends BaseActivity {
         dataList.removeAll(dataList);
         sim_adapter.notifyDataSetChanged();
         listView.setAdapter(sim_adapter);
-        setListView();
+        try {
+            setListView();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
+
     //退出时关闭数据库
     @Override
     protected void onDestroy() {
@@ -97,10 +110,10 @@ public class BillActivity extends BaseActivity {
     /**
      * 填充数据到Listview
      */
-    private void setListView(){
+    private void setListView() throws JSONException {
         //填充适配器时map的Key
         String[] mapKey = new String[]{
-                "money","describe","createTime"
+                "money", "describe", "createTime"
         };
         //填充适配器时对应控件的id
         int[] idList = new int[]{
@@ -108,23 +121,27 @@ public class BillActivity extends BaseActivity {
                 R.id.describe,
                 R.id.createTime
         };
-        sim_adapter = new SimpleAdapter(this,getDataList(),R.layout.item,mapKey,idList);
+        sim_adapter = new SimpleAdapter(this, getDataList(), R.layout.item, mapKey, idList);
         listView.setAdapter(sim_adapter);
     }
 
     /**
      * 获取数据源
+     *
      * @return 返回数据列表
      */
-    private List<Map<String,Object>> getDataList(){
+    private List<Map<String, Object>> getDataList() throws JSONException {
         List<Bill> billList = mgr.queryBill();
         for (Bill bill : billList) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("money",bill.Money);
-            map.put("describe",bill.Describe);
-            map.put("createTime",bill.CreateTime);
+            map.put("money", bill.Money);
+            map.put("describe", bill.Describe);
+            map.put("createTime", bill.CreateTime);
             dataList.add(map);
         }
+
+        String userId = Integer.toString(mgr.currentUser.UserId);
+        mgr.toJSON(userId);
         return dataList;
     }
 }

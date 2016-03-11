@@ -1,5 +1,8 @@
 package com.zhzane.android.dotnoteandroid.DB;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -109,5 +112,17 @@ public class User {
         if (rs){
             this.MAC = MAC;
         }
+    }
+
+    public String toJSON(String userId) throws JSONException {
+        JSONObject json = new JSONObject();
+        if (userId.equals(UserId)) {
+            json.put("UserId", userId);
+            json.put("UserName", UserName);
+            json.put("TotalMoney", TotalMoney);
+            json.put("RelatedUserId", RelatedUserId);
+            json.put("MAC", MAC);
+        }
+        return json.toString();
     }
 }

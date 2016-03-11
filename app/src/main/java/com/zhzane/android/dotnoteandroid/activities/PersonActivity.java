@@ -60,36 +60,20 @@ public class PersonActivity extends BaseActivity implements UserEditDialogFragme
 
         textUser = (TextView) findViewById(R.id.text_user);
 
-        userList = mgr.queryUser();
         initUser();
     }
     //初始化用户，判断用户是否存在，如果不存在则插入数据库。
     public void initUser(){
         boolean isExsisUser = false;
-        for (User u : userList) {
-            isExsisUser = u.MAC.equals(textMac.getText().toString())? true : false;
+            User u = mgr.currentUser;
+            isExsisUser = u.UserId == 1? true : false;
             if (isExsisUser){
-                CurrentUser.UserId = 1;
-                CurrentUser.UserName = u.UserName;
-                CurrentUser.RelatedUserId = u.RelatedUserId;
-                CurrentUser.MAC = u.MAC;
-                CurrentUser.TotalMoney = u.TotalMoney;
+                if(!(CurrentUser.MAC == textMac.getText().toString())) {
+                    CurrentUser.MAC = textMac.getText().toString();
+                    mgr.updateUser(CurrentUser);
+                }
                 textUser.setText(u.UserName);
             }
-        }
-        if (isExsisUser == false) {
-            User user = new User();
-            user.UserId = 1;
-            user.UserName = textUser.getText().toString();
-            user.MAC = textMac.getText().toString();
-            user.TotalMoney = 0.0;
-            user.RelatedUserId = "";
-            try {
-                mgr.addUser(user);
-            } catch (Exception e) {
-                Log.i("AddUser", "插入用户失败，错误：" + e.getMessage());
-            }
-        }
     }
 
     public String getLocalMacAddress() {

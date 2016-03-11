@@ -4,7 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +23,27 @@ import java.util.List;
 public class DBManager {
     private DBHelper helper;
     private SQLiteDatabase db;
+    private JSONArray jsons;
+    public User currentUser;
 
     public DBManager(Context context){
         helper = new DBHelper(context);
         db = helper.getWritableDatabase();
+
+        List<User> users = queryCurrentUser();
+        if (users.size() > 0){
+            for (User user : users){
+                currentUser = user;
+            }
+        }else {
+            currentUser = new User();
+            currentUser.UserId = 1;
+            currentUser.UserName = "username";
+            currentUser.TotalMoney = 0.0;
+            currentUser.RelatedUserId = "";
+            currentUser.MAC = "";
+            addUser(currentUser);
+        }
     }
     /*添加账单*/
 
@@ -166,8 +191,9 @@ public class DBManager {
         return c;
     }
     /*查询账单列表*/
-    public List<Bill> queryBill(){
+    public List<Bill> queryBill() throws JSONException {
         ArrayList<Bill> bills = new ArrayList<Bill>();
+        jsons = new JSONArray();
         Cursor c = queryTheCursor("Bill");
         while (c.moveToNext()){
             Bill bill = new Bill();
@@ -179,6 +205,11 @@ public class DBManager {
             bill.ExternalId = c.getString(c.getColumnIndex("ExternalId"));
             bill.TagId = c.getString(c.getColumnIndex("TagId"));
             bill.Describe = c.getString(c.getColumnIndex("Describe"));
+
+            if (bill.UserId.equals(String.valueOf(currentUser.UserId))) {
+                jsons.put(bill.toJSON(String.valueOf(currentUser.UserId)));
+            }
+
             bills.add(bill);
         }
         c.close();
@@ -187,7 +218,7 @@ public class DBManager {
     /*查询用户列表*/
     public List<User> queryCurrentUser(){
         ArrayList<User> users = new ArrayList<User>();
-        Cursor c = queryTheCursorByWhere("User","UserId","1");
+        Cursor c = queryTheCursorByWhere("User", "UserId", "1");
         while (c.moveToNext()){
             User user = new User();
             user._id = c.getInt(c.getColumnIndex("_id"));
@@ -233,6 +264,44 @@ public class DBManager {
         c.close();
         return tags;
     }
+
+    public void toJSON(String userId){
+
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName = "BillJson.json";
+        File dir = new File(path);
+        if (!dir.exists() || !dir.isDirectory()){
+            dir.mkdirs();
+        }
+
+        File file = new File(path,fileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                file.delete();
+                file.createNewFile();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        try{
+            FileWriter fw = new FileWriter(file,true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(jsons.toString());
+            bw.flush();
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*关闭数据库*/
     public void CloseDB(){
         db.close();
