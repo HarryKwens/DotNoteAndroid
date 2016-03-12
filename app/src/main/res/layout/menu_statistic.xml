@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+            android:id="@+id/nav_btn_back"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/nav_awesome_back"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:textColor="@color/colorWhite"
+            android:text="@string/title_activity_statistics"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|right">
+
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+            android:id="@+id/nav_btn_templates"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/awesome_inbox"
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
+
+</LinearLayout>

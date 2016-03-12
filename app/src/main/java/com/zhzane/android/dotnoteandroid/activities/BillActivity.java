@@ -38,18 +38,19 @@ public class BillActivity extends BaseActivity {
     private List<Map<String, Object>> dataList;      //数据源
     private Button btnAdd;      //添加账单按钮
     private TextView btnPerson; //进入个人中心
+    private TextView btnStatistic;  //进入统计栏
+    private TextView btnShare;  //进入分享
     public DBManager mgr;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //TextView mTitle = (TextView)toolbar.findViewById(R.id.txtTitle);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);*/
 
         //绑定listView控件
         listView = (ListView) findViewById(R.id.listView);
@@ -82,6 +83,25 @@ public class BillActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        //进入统计栏
+        btnStatistic = (TextView) findViewById(R.id.nav_btn_statistics);
+        btnStatistic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BillActivity.this, StatisticsActivity.class));
+            }
+        });
+
+        //进入分享
+        btnShare = (TextView) findViewById(R.id.nav_btn_share);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BillActivity.this, ShareActivity.class));
+            }
+        });
+
     }
 
     /**

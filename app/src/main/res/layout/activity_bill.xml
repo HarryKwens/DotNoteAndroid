@@ -13,6 +13,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+        <include layout="@layout/menu_bill_main" />
+        <!--
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -37,13 +40,8 @@
                 android:text="@string/title"
                 android:textSize="20sp" />
 
-            
-            <!--<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="right|clip_horizontal"-->
-                <!--/>-->
         </android.support.v7.widget.Toolbar>
+        -->
 
         <ListView
             android:layout_width="match_parent"

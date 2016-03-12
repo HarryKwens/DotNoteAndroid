@@ -4,6 +4,8 @@
     <string name="title">DotNote</string>
     <string name="title_activity_bill">DotNote</string>
     <string name="title_activity_person">个人中心</string>
+    <string name="title_activity_statistics">统计</string>
+    <string name="title_activity_share">分享</string>
 
     <!-- 账单页面 -->
     <string name="txtAddBill_Money">金额</string>
@@ -28,6 +30,9 @@
     <string name="awesome_tags">\uf02c</string>
     <string name="awesome_minus">\uf068</string>
     <string name="awesome_edit">\uf044</string>
+    <string name="awesome_chart">\uf080</string>
+    <string name="awesome_inbox">\uf01c</string>
+    <string name="awesome_group">\uf0c0</string>
     <string name="awesome_tag_medical">\uf0f9</string>
     <string name="awesome_tag_shopping">\uf07a</string>
     <string name="awesome_tag_traffic">\uf072</string>
@@ -100,5 +105,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_statistics">StatisticsActivity</string>
+
 </resources>

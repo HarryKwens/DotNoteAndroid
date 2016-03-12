@@ -5,11 +5,5 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/menu_statistic" />
-
-    <WebView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/webView" />
-
+    <include layout="@layout/menu_share" />
 </LinearLayout>
