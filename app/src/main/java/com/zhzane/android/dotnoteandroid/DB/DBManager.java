@@ -5,16 +5,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.util.JsonReader;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by KWENS on 2016/2/16.
@@ -26,16 +35,16 @@ public class DBManager {
     private JSONArray jsons;
     public User currentUser;
 
-    public DBManager(Context context){
+    public DBManager(Context context) {
         helper = new DBHelper(context);
         db = helper.getWritableDatabase();
 
         List<User> users = queryCurrentUser();
-        if (users.size() > 0){
-            for (User user : users){
+        if (users.size() > 0) {
+            for (User user : users) {
                 currentUser = user;
             }
-        }else {
+        } else {
             currentUser = new User();
             currentUser.UserId = 1;
             currentUser.UserName = "username";
@@ -44,158 +53,163 @@ public class DBManager {
             currentUser.MAC = "";
             addUser(currentUser);
         }
+        //测试读取json文件
+        //getJSON();
     }
     /*添加账单*/
 
-    public void addBill(Bill bill){
+    public void addBill(Bill bill) {
         db.beginTransaction();
         try {
             db.execSQL("INSERT INTO Bill (UserId,Money,CreateTime,LastModifiedTime,ExternalId,TagId,Describe) values (?,?,?,?,?,?,?)",
-                    new Object[]{bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
+                    new Object[]{bill.UserId, bill.Money, bill.CreateTime, bill.LastModifiedTime, bill.ExternalId, bill.TagId, bill.Describe});
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
     }
 
-    public void addBills(List<Bill> bills){
+    public void addBills(List<Bill> bills) {
         db.beginTransaction();
         try {
             for (Bill bill : bills) {
                 db.execSQL("INSERT INTO Bill (UserId,Money,CreateTime,LastModifiedTime,ExternalId,TagId,Describe) values (?,?,?,?,?,?,?)",
-                        new Object[]{bill.UserId,bill.Money,bill.CreateTime,bill.LastModifiedTime,bill.ExternalId,bill.TagId,bill.Describe});
+                        new Object[]{bill.UserId, bill.Money, bill.CreateTime, bill.LastModifiedTime, bill.ExternalId, bill.TagId, bill.Describe});
             }
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
     }
+
     /*添加用户*/
-    public void addUser(User user){
+    public void addUser(User user) {
         db.beginTransaction();
         try {
             db.execSQL("INSERT INTO User (UserId,UserName,TotalMoney,RelatedUserId,MAC) VALUES(?,?,?,?,?)",
                     new Object[]{user.UserId, user.UserName, user.TotalMoney, user.RelatedUserId, user.MAC});
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
     }
 
-    public void addUser(List<User> users){
+    public void addUser(List<User> users) {
         db.beginTransaction();
         try {
             for (User user : users) {
                 db.execSQL("INSERT INTO User (UserId,UserName,TotalMoney,RelatedUserId,MAC) VALUES(?,?,?,?,?)",
-                        new Object[]{user.UserId,user.UserName,user.TotalMoney,user.RelatedUserId,user.MAC});
+                        new Object[]{user.UserId, user.UserName, user.TotalMoney, user.RelatedUserId, user.MAC});
             }
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
     }
+
     /*添加标签*/
-    public void addTag(Tag tag){
+    public void addTag(Tag tag) {
         db.beginTransaction();
         try {
             db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe) VALUES(?,?,?,?)",
                     new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe});
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
     }
 
-    public void addTag(List<Tag> tags){
+    public void addTag(List<Tag> tags) {
         db.beginTransaction();
         try {
             for (Tag tag : tags) {
                 db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe) VALUES(?,?,?,?)",
-                        new Object[]{tag.TagId,tag.TagName,tag.UseNum,tag.Describe});
+                        new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe});
             }
             db.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             db.endTransaction();
         }
     }
+
     /*账单修改*/
-    public void updateBill(Bill bill){
+    public void updateBill(Bill bill) {
         ContentValues cv = new ContentValues();
-        cv.put("UserId",bill.UserId);
-        cv.put("Money",bill.Money);
-        cv.put("CreateTime",bill.CreateTime);
-        cv.put("LastModifiedTime",bill.LastModifiedTime);
-        cv.put("ExternalId",bill.ExternalId);
+        cv.put("UserId", bill.UserId);
+        cv.put("Money", bill.Money);
+        cv.put("CreateTime", bill.CreateTime);
+        cv.put("LastModifiedTime", bill.LastModifiedTime);
+        cv.put("ExternalId", bill.ExternalId);
         cv.put("TagId", bill.TagId);
-        cv.put("Describe",bill.Describe);
+        cv.put("Describe", bill.Describe);
         db.update("Bill", cv, "_id = ?", new String[]{Integer.toString(bill._id)});
     }
+
     /*用户修改*/
-    public void updateUser(User user){
+    public void updateUser(User user) {
         ContentValues cv = new ContentValues();
-        cv.put("UserId",user.UserId);
-        cv.put("UserName",user.UserName);
-        cv.put("TotalMoney",user.TotalMoney);
-        cv.put("RelatedUserId",user.RelatedUserId);
-        cv.put("MAC",user.MAC);
+        cv.put("UserId", user.UserId);
+        cv.put("UserName", user.UserName);
+        cv.put("TotalMoney", user.TotalMoney);
+        cv.put("RelatedUserId", user.RelatedUserId);
+        cv.put("MAC", user.MAC);
         db.update("User", cv, "MAC = ?", new String[]{user.MAC});
     }
+
     /*标签修改*/
-    public void updateTag(Tag tag){
+    public void updateTag(Tag tag) {
         ContentValues cv = new ContentValues();
-        cv.put("TagID",tag.TagId);
-        cv.put("TagName",tag.TagName);
-        cv.put("UseNum",tag.UseNum);
-        cv.put("Describe",tag.Describe);
+        cv.put("TagID", tag.TagId);
+        cv.put("TagName", tag.TagName);
+        cv.put("UseNum", tag.UseNum);
+        cv.put("Describe", tag.Describe);
         db.update("Tag", cv, "TagId = ?", new String[]{Integer.toString(tag.TagId)});
     }
+
     /*删除账单*/
-    public void deleteBill(Bill bill){
+    public void deleteBill(Bill bill) {
         db.beginTransaction();
         try {
-            db.delete("Bill","_id = ?",new String[]{Integer.toString(bill._id)});
+            db.delete("Bill", "_id = ?", new String[]{Integer.toString(bill._id)});
             db.setTransactionSuccessful();
-        }finally {
+        } finally {
             db.endTransaction();
         }
     }
+
     /*删除用户*/
-    public void deleteUser(User user){
+    public void deleteUser(User user) {
         db.beginTransaction();
         try {
-            db.delete("User","UserId = ?",new String[]{Integer.toString(user.UserId)});
+            db.delete("User", "UserId = ?", new String[]{Integer.toString(user.UserId)});
             db.setTransactionSuccessful();
-        }finally {
+        } finally {
             db.endTransaction();
         }
     }
+
     /*查询全部*/
-    public Cursor queryTheCursor(String tableName){
-        Cursor c = db.rawQuery("SELECT * FROM " +tableName,null);
+    public Cursor queryTheCursor(String tableName) {
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName, null);
         return c;
     }
 
-    public Cursor queryTheCursorByWhere(String tableName,String column,String where){
-        Cursor c = db.rawQuery("SELECT * FROM " + tableName + " WHERE " + column + " = ?",new String[]{where});
+    public Cursor queryTheCursorByWhere(String tableName, String column, String where) {
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName + " WHERE " + column + " = ?", new String[]{where});
         return c;
     }
 
-    public Cursor queryTheCursor(String tableName,String whereStr){
-        Cursor c = db.rawQuery("SELECT * FROM " +tableName + " ORDER BY "+whereStr,null);
+    public Cursor queryTheCursor(String tableName, String whereStr) {
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName + " ORDER BY " + whereStr, null);
         return c;
     }
+
     /*查询账单列表*/
     public List<Bill> queryBill() throws JSONException {
         ArrayList<Bill> bills = new ArrayList<Bill>();
         jsons = new JSONArray();
         Cursor c = queryTheCursor("Bill");
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             Bill bill = new Bill();
             bill._id = c.getInt(c.getColumnIndex("_id"));
             bill.UserId = c.getString(c.getColumnIndex("UserId"));
@@ -215,11 +229,12 @@ public class DBManager {
         c.close();
         return bills;
     }
+
     /*查询用户列表*/
-    public List<User> queryCurrentUser(){
+    public List<User> queryCurrentUser() {
         ArrayList<User> users = new ArrayList<User>();
         Cursor c = queryTheCursorByWhere("User", "UserId", "1");
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             User user = new User();
             user._id = c.getInt(c.getColumnIndex("_id"));
             user.UserId = c.getInt(c.getColumnIndex("UserId"));
@@ -236,7 +251,7 @@ public class DBManager {
     public List<User> queryUser() {
         ArrayList<User> users = new ArrayList<User>();
         Cursor c = queryTheCursor("User");
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             User user = new User();
             user._id = c.getInt(c.getColumnIndex("_id"));
             user.UserId = c.getInt(c.getColumnIndex("UserId"));
@@ -249,11 +264,12 @@ public class DBManager {
         c.close();
         return users;
     }
+
     /*查询标签列表*/
-    public List<Tag> queryTag(){
+    public List<Tag> queryTag() {
         ArrayList<Tag> tags = new ArrayList<Tag>();
-        Cursor c = queryTheCursor("Tag","UseNum");
-        while (c.moveToNext()){
+        Cursor c = queryTheCursor("Tag", "UseNum");
+        while (c.moveToNext()) {
             Tag tag = new Tag();
             tag.TagId = c.getInt(c.getColumnIndex("TagId"));
             tag.TagName = c.getString(c.getColumnIndex("TagName"));
@@ -265,33 +281,32 @@ public class DBManager {
         return tags;
     }
 
-    public void toJSON(String userId){
+    public void toJSON(String userId) {
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName = "BillJson.json";
+        String fileName = "MyJson.json";
         File dir = new File(path);
-        if (!dir.exists() || !dir.isDirectory()){
+        if (!dir.exists() || !dir.isDirectory()) {
             dir.mkdirs();
         }
 
-        File file = new File(path,fileName);
+        File file = new File(path, fileName);
         if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             try {
                 file.delete();
                 file.createNewFile();
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        try{
-            FileWriter fw = new FileWriter(file,true);
+        try {
+            FileWriter fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(jsons.toString());
             bw.flush();
@@ -301,9 +316,46 @@ public class DBManager {
             e.printStackTrace();
         }
     }
+    //读取Json文件，beta版。与分享界面一起完善。
+    public List<Map<String, Object>> getJSON(String filePath) {
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName = "MyJson.json";
+        String jsonStr;
+        String resultStr = "";
+        List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+
+        try {
+            //读取json文件
+            File file = new File(path, fileName);
+            FileInputStream fis = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+            JsonReader jr = new JsonReader(new InputStreamReader(fis, "UTF-8"));
+
+            while ((jsonStr = br.readLine()) != null) {
+                resultStr += jsonStr;
+            }
+            JSONArray ja = new JSONArray(resultStr);
+            for (int i = 0; i < ja.length(); i++) {
+                JSONTokener jsonTokener = new JSONTokener(ja.get(i).toString());
+                JSONObject jo = new JSONObject(jsonTokener.nextValue().toString());
+                Map<String, Object> jsonMap = new HashMap<String, Object>();
+                jsonMap.put("UserId", jo.getString("UserId"));
+                jsonMap.put("Money", jo.getDouble("Money"));
+                jsonMap.put("CreateTime", jo.getString("CreateTime"));
+                jsonMap.put("LastModifiedTime", jo.getString("LastModifiedTime"));
+                jsonMap.put("ExternalId", jo.getString("ExternalId"));
+                jsonMap.put("TagId", jo.getString("TagId"));
+                jsonMap.put("Describe", jo.getString("Describe"));
+                jsonList.add(jsonMap);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonList;
+    }
 
     /*关闭数据库*/
-    public void CloseDB(){
+    public void CloseDB() {
         db.close();
     }
 
