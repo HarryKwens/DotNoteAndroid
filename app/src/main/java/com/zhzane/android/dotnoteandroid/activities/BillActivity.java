@@ -56,6 +56,10 @@ public class BillActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.listView);
         mgr = new DBManager(this);
 
+        if (mgr.currentUser.MAC.equals("") || mgr.currentUser.MAC == null) {
+            mgr.currentUser.MAC = getLocalMacAddress();
+            mgr.updateUser(mgr.currentUser);
+        }
         dataList = new ArrayList<Map<String, Object>>();
         //调用设置listView数据
         try {
@@ -98,6 +102,8 @@ public class BillActivity extends BaseActivity {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //测试获取json数据，并插入数据库。
+                mgr.getJSON();
                 startActivity(new Intent(BillActivity.this, ShareActivity.class));
             }
         });

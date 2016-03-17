@@ -4,9 +4,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Environment;
 import android.util.JsonReader;
 import android.util.Log;
+
+import com.zhzane.android.dotnoteandroid.activities.PersonActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +36,7 @@ import java.util.Map;
 public class DBManager {
     private DBHelper helper;
     private SQLiteDatabase db;
-    private JSONArray jsons;
+    public JSONObject jsonObject;
     public User currentUser;
 
     public DBManager(Context context) {
@@ -53,9 +57,8 @@ public class DBManager {
             currentUser.MAC = "";
             addUser(currentUser);
         }
-        //测试读取json文件
-        //getJSON();
     }
+
     /*添加账单*/
 
     public void addBill(Bill bill) {
@@ -111,8 +114,8 @@ public class DBManager {
     public void addTag(Tag tag) {
         db.beginTransaction();
         try {
-            db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe) VALUES(?,?,?,?)",
-                    new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe});
+            db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe,mac) VALUES(?,?,?,?,?)",
+                    new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe, tag.mac});
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -123,8 +126,8 @@ public class DBManager {
         db.beginTransaction();
         try {
             for (Tag tag : tags) {
-                db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe) VALUES(?,?,?,?)",
-                        new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe});
+                db.execSQL("INSERT INTO Tag (TagId,TagName,UseNum,Describe,mac) VALUES(?,?,?,?,?)",
+                        new Object[]{tag.TagId, tag.TagName, tag.UseNum, tag.Describe, tag.mac});
             }
             db.setTransactionSuccessful();
         } finally {
@@ -153,7 +156,7 @@ public class DBManager {
         cv.put("TotalMoney", user.TotalMoney);
         cv.put("RelatedUserId", user.RelatedUserId);
         cv.put("MAC", user.MAC);
-        db.update("User", cv, "MAC = ?", new String[]{user.MAC});
+        db.update("User", cv, "UserId = ?", new String[]{Integer.toString(user.UserId)});
     }
 
     /*标签修改*/
@@ -163,6 +166,7 @@ public class DBManager {
         cv.put("TagName", tag.TagName);
         cv.put("UseNum", tag.UseNum);
         cv.put("Describe", tag.Describe);
+        cv.put("mac", tag.mac);
         db.update("Tag", cv, "TagId = ?", new String[]{Integer.toString(tag.TagId)});
     }
 
@@ -207,8 +211,10 @@ public class DBManager {
     /*查询账单列表*/
     public List<Bill> queryBill() throws JSONException {
         ArrayList<Bill> bills = new ArrayList<Bill>();
-        jsons = new JSONArray();
-        Cursor c = queryTheCursor("Bill");
+        JSONArray jsons = new JSONArray();
+        jsonObject = new JSONObject();
+        //Cursor c = queryTheCursor("Bill");
+        Cursor c = queryTheCursorByWhere("Bill","UserId", "1");
         while (c.moveToNext()) {
             Bill bill = new Bill();
             bill._id = c.getInt(c.getColumnIndex("_id"));
@@ -226,6 +232,7 @@ public class DBManager {
 
             bills.add(bill);
         }
+        jsonObject.put("bill", jsons);
         c.close();
         return bills;
     }
@@ -234,6 +241,7 @@ public class DBManager {
     public List<User> queryCurrentUser() {
         ArrayList<User> users = new ArrayList<User>();
         Cursor c = queryTheCursorByWhere("User", "UserId", "1");
+        JSONArray jsons = new JSONArray();
         while (c.moveToNext()) {
             User user = new User();
             user._id = c.getInt(c.getColumnIndex("_id"));
@@ -242,7 +250,18 @@ public class DBManager {
             user.TotalMoney = c.getDouble(c.getColumnIndex("TotalMoney"));
             user.RelatedUserId = c.getString(c.getColumnIndex("RelatedUserId"));
             user.MAC = c.getString(c.getColumnIndex("MAC"));
+
+            try {
+                jsons.put(user.toJSON(String.valueOf(user.UserId)));
+            } catch (Exception e) {
+
+            }
             users.add(user);
+        }
+        try {
+            jsonObject.put("user", jsons);
+        } catch (Exception e) {
+
         }
         c.close();
         return users;
@@ -251,6 +270,7 @@ public class DBManager {
     public List<User> queryUser() {
         ArrayList<User> users = new ArrayList<User>();
         Cursor c = queryTheCursor("User");
+        JSONArray jsons = new JSONArray();
         while (c.moveToNext()) {
             User user = new User();
             user._id = c.getInt(c.getColumnIndex("_id"));
@@ -259,7 +279,18 @@ public class DBManager {
             user.TotalMoney = c.getDouble(c.getColumnIndex("TotalMoney"));
             user.RelatedUserId = c.getString(c.getColumnIndex("RelatedUserId"));
             user.MAC = c.getString(c.getColumnIndex("MAC"));
+
+            try {
+                jsons.put(user.toJSON(String.valueOf(user.UserId)));
+            } catch (Exception e) {
+
+            }
             users.add(user);
+        }
+        try {
+            jsonObject.put("user", users);
+        } catch (Exception e) {
+
         }
         c.close();
         return users;
@@ -269,19 +300,35 @@ public class DBManager {
     public List<Tag> queryTag() {
         ArrayList<Tag> tags = new ArrayList<Tag>();
         Cursor c = queryTheCursor("Tag", "UseNum");
+        JSONArray jsons = new JSONArray();
         while (c.moveToNext()) {
             Tag tag = new Tag();
             tag.TagId = c.getInt(c.getColumnIndex("TagId"));
             tag.TagName = c.getString(c.getColumnIndex("TagName"));
             tag.UseNum = c.getInt(c.getColumnIndex("UseNum"));
             tag.Describe = c.getString(c.getColumnIndex("Describe"));
+            tag.mac = c.getString(c.getColumnIndex("mac"));
+            try {
+                jsons.put(tag.toJSON());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             tags.add(tag);
+        }
+        try {
+            jsonObject.put("tag", jsons);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         c.close();
         return tags;
     }
 
     public void toJSON(String userId) {
+
+        queryCurrentUser();
+        queryTag();
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         String fileName = "MyJson.json";
@@ -308,7 +355,7 @@ public class DBManager {
         try {
             FileWriter fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(jsons.toString());
+            bw.write(jsonObject.toString());
             bw.flush();
             bw.close();
             fw.close();
@@ -316,8 +363,11 @@ public class DBManager {
             e.printStackTrace();
         }
     }
-    //读取Json文件，beta版。与分享界面一起完善。
-    public List<Map<String, Object>> getJSON(String filePath) {
+
+    /**
+     * 读取Json文件。
+     */
+    public void getJSON() {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         String fileName = "MyJson.json";
         String jsonStr;
@@ -329,29 +379,112 @@ public class DBManager {
             File file = new File(path, fileName);
             FileInputStream fis = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
-            JsonReader jr = new JsonReader(new InputStreamReader(fis, "UTF-8"));
 
             while ((jsonStr = br.readLine()) != null) {
                 resultStr += jsonStr;
             }
-            JSONArray ja = new JSONArray(resultStr);
-            for (int i = 0; i < ja.length(); i++) {
-                JSONTokener jsonTokener = new JSONTokener(ja.get(i).toString());
-                JSONObject jo = new JSONObject(jsonTokener.nextValue().toString());
-                Map<String, Object> jsonMap = new HashMap<String, Object>();
-                jsonMap.put("UserId", jo.getString("UserId"));
-                jsonMap.put("Money", jo.getDouble("Money"));
-                jsonMap.put("CreateTime", jo.getString("CreateTime"));
-                jsonMap.put("LastModifiedTime", jo.getString("LastModifiedTime"));
-                jsonMap.put("ExternalId", jo.getString("ExternalId"));
-                jsonMap.put("TagId", jo.getString("TagId"));
-                jsonMap.put("Describe", jo.getString("Describe"));
-                jsonList.add(jsonMap);
+            JSONObject jsonOb = new JSONObject(resultStr);
+            //分别获取JSON文件中bill，user，tag数据。
+            getJsonData(jsonOb);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取json文件中的数据，并插入数据库
+     *
+     * @param json json文件中的数据，以JSONObject形式保存。
+     */
+    public void getJsonData(JSONObject json) {
+        try {
+            JSONArray billJa = json.getJSONArray("bill");
+            JSONArray userJa = json.getJSONArray("user");
+            JSONArray tagJa = json.getJSONArray("tag");
+            List<User> userlst = queryUser();   //本地数据库中的用户
+            List<Tag> taglst = queryTag();      //本地数据库中的标签
+
+            //获取用户数据并插入数据
+            boolean isHasUser = false;
+            User newUser = new User();
+            try {
+                //判断导入用户是否已经存在，如不存在，新增用户id添加新用户。
+                for (int i = 0; i < userJa.length(); i++) {
+                    JSONTokener jsonTokener = new JSONTokener(userJa.get(i).toString());
+                    JSONObject jo = new JSONObject(jsonTokener.nextValue().toString());
+                    for (User user : userlst) {
+                        if (user.MAC.equals(jo.getString("MAC"))) {
+                            isHasUser = true;
+                            newUser.UserId = user.UserId;
+                            user.UserName = jo.getString("UserName");
+                            updateUser(user);
+                            break;
+                        }
+                    }
+                    if (!isHasUser) {
+                        newUser.UserId = userlst.size();
+                        newUser.UserName = jo.getString("UserName");
+                        newUser.TotalMoney = jo.getDouble("TotalMoney");
+                        newUser.RelatedUserId = jo.getString("RelateUserId");
+                        newUser.MAC = jo.getString("MAC");
+                        addUser(newUser);
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+            //获取账单数据并插入数据
+            try {
+                List<Bill> billList = new ArrayList<>();
+                for (int i = 0; i < billJa.length(); i++) {
+                    JSONTokener jsonTokener = new JSONTokener(billJa.get(i).toString());
+                    JSONObject jo = new JSONObject(jsonTokener.nextValue().toString());
+                    Bill jsonBill = new Bill();
+                    jsonBill.UserId = String.valueOf(newUser.UserId);
+                    jsonBill.Money = jo.getDouble("Money");
+                    jsonBill.CreateTime = jo.getString("CreateTime");
+                    jsonBill.LastModifiedTime = jo.getString("LastModifiedTime");
+                    jsonBill.ExternalId = jo.getString("ExternalId");
+                    jsonBill.TagId = jo.getString("TagId");
+                    jsonBill.Describe = jo.getString("Describe");
+                    billList.add(jsonBill);
+                }
+                addBills(billList);
+            } catch (Exception e) {
+
+            }
+            //获取标签数据并插入数据
+            try {
+                List<Tag> tagList = new ArrayList<>();
+                boolean isHasTag = false;
+                for (int i = 0; i < tagJa.length(); i++) {
+                    JSONTokener jsonTokener = new JSONTokener(tagJa.get(i).toString());
+                    JSONObject jo = new JSONObject(jsonTokener.nextValue().toString());
+                    for (Tag tag : taglst) {
+                        if (tag.mac.equals(jo.getString("mac")) && tag.TagName.equals(jo.getString("TagName"))) {
+                            tag.UseNum = jo.getInt("UseNum");
+                            updateTag(tag);
+                            isHasTag = true;
+                            break;
+                        }
+                    }
+                    if (!isHasTag) {
+                        Tag tag = new Tag();
+                        tag.TagId = taglst.size();
+                        tag.TagName = jo.getString("TagName");
+                        tag.UseNum = jo.getInt("UseNum");
+                        tag.Describe = jo.getString("Describe");
+                        tag.mac = jo.getString("mac");
+                        tagList.add(tag);
+                    }
+                }
+                addTag(tagList);
+            } catch (Exception e) {
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jsonList;
     }
 
     /*关闭数据库*/

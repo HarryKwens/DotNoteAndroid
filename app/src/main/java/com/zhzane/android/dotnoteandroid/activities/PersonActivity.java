@@ -76,11 +76,11 @@ public class PersonActivity extends BaseActivity implements UserEditDialogFragme
             }
     }
 
-    public String getLocalMacAddress() {
-        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        WifiInfo info = wifi.getConnectionInfo();
-        return info.getMacAddress();
-    }
+//    public String getLocalMacAddress() {
+//        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+//        WifiInfo info = wifi.getConnectionInfo();
+//        return info.getMacAddress();
+//    }
 
     @Override
     public void onUserEditComplete(String userName){

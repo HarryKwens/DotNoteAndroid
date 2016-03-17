@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId INTEGER,UserName VARCHAR,TotalMoney DECIMAL,RelatedUserId VARCHAR,MAC VARCHAR)");
         //创建标签表（Tag）
         db.execSQL("CREATE TABLE Tag" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId INTEGER,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId INTEGER,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR,mac VARCHAR)");
     }
     //版本修改时调用
     @Override
@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("ALTER TABLE Tag RENAME TO _Temp_Tag");
         db.execSQL("ALTER TABLE User REAME TO _Temp_User");
         db.execSQL("CREATE TABLE Tag" +
-                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId INTEGER,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR)");
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT,TagId INTEGER,TagName VARCHAR,UseNum INTEGER,Describe VARCHAR,mac VARCHAR)");
         db.execSQL("CREATE TABLE User" +
                 "(_id INTEGER PRIMARY KEY AUTOINCREMENT,UserId INTEGER,UserName VARCHAR,TotalMoney DECIMAL,RelatedUserId VARCHAR,MAC VARCHAR)");
         db.execSQL("DROP TABLE _Temp_Tag");

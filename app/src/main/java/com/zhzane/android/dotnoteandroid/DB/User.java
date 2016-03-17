@@ -116,7 +116,7 @@ public class User {
 
     public String toJSON(String userId) throws JSONException {
         JSONObject json = new JSONObject();
-        if (userId.equals(UserId)) {
+        if (userId.equals(String.valueOf(UserId))) {
             json.put("UserId", userId);
             json.put("UserName", UserName);
             json.put("TotalMoney", TotalMoney);
