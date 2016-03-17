@@ -80,6 +80,7 @@ public class TagAddActivity extends BaseActivity {
         tag.TagName = txtTagName;
         tag.UseNum = 0;
         tag.Describe = txtDescribe;
+        tag.mac = mgr.currentUser.MAC;
 
         try{
             mgr.addTag(tag);

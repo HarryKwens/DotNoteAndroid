@@ -1,5 +1,7 @@
 package com.zhzane.android.dotnoteandroid.DB;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +19,7 @@ public class Tag {
     public String TagName;
     public int UseNum;
     public String Describe;
+    public String mac;
     public ArrayList<String> IdList;
 
     public Tag() {
@@ -38,13 +41,13 @@ public class Tag {
         Describe = describe;
     }
 
-    public Tag(int id, int tagId, String tagName,int userNum,String describe) {
+    public Tag(int id, int tagId, String tagName,int userNum,String describe,String mac) {
         this._id = id;
         TagId = tagId;
         TagName = tagName;
         UseNum = userNum;
         Describe = describe;
-
+        this.mac = mac;
     }
 
     public int getId() {
@@ -84,7 +87,35 @@ public class Tag {
         }
     }
 
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        String regex ="^[A-Za-z0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(mac);
+        boolean rs = matcher.matches();
+        if (rs){
+            this.mac = mac;
+        }
+    }
+
     public ArrayList<String> getIdList() {
         return IdList;
+    }
+
+    public String toJSON(){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("TagId", TagId);
+            json.put("TagName",TagName);
+            json.put("UseNum",UseNum);
+            json.put("mac",mac);
+            json.put("Describe",Describe);
+        }catch (Exception e){
+
+        }
+        return json.toString();
     }
 }

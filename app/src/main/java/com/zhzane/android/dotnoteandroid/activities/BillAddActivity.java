@@ -335,6 +335,9 @@ public class BillAddActivity extends BaseActivity {
                 Tag tag = new Tag();
                 tag.TagId = i;
                 tag.TagName = tagStr.get(i);
+                tag.mac = mgr.currentUser.MAC;
+                tag.UseNum = 0;
+                tag.Describe = "";
                 tagList.add(tag);
             }
             mgr.addTag(tagList);
