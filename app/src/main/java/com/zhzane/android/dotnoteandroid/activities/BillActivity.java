@@ -18,6 +18,8 @@ import com.zhzane.android.dotnoteandroid.DB.Bill;
 import com.zhzane.android.dotnoteandroid.DB.DBManager;
 import com.zhzane.android.dotnoteandroid.DB.User;
 import com.zhzane.android.dotnoteandroid.R;
+import com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView;
+import com.zhzane.android.dotnoteandroid.component.jsapi.sortClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +27,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,8 +105,7 @@ public class BillActivity extends BaseActivity {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //测试获取json数据，并插入数据库。
-                mgr.getJSON();
+
                 startActivity(new Intent(BillActivity.this, ShareActivity.class));
             }
         });
@@ -145,7 +147,8 @@ public class BillActivity extends BaseActivity {
         int[] idList = new int[]{
                 R.id.money,
                 R.id.describe,
-                R.id.createTime
+                R.id.createTime,
+//                R.id.tag
         };
         sim_adapter = new SimpleAdapter(this, getDataList(), R.layout.item, mapKey, idList);
         listView.setAdapter(sim_adapter);
@@ -158,16 +161,18 @@ public class BillActivity extends BaseActivity {
      */
     private List<Map<String, Object>> getDataList() throws JSONException {
         List<Bill> billList = mgr.queryBill();
+        sortClass sort = new sortClass();
+        Collections.sort(billList,sort);
         for (Bill bill : billList) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("money", bill.Money);
             map.put("describe", bill.Describe);
             map.put("createTime", bill.CreateTime);
+//            map.put("tag",R.string.awesome_tag_bar);
             dataList.add(map);
         }
 
         String userId = Integer.toString(mgr.currentUser.UserId);
-        mgr.toJSON(userId);
         return dataList;
     }
 }

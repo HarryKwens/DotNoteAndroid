@@ -16,14 +16,12 @@
             android:layout_height="30dp"
 
             />
-        <TextView
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
             android:id="@+id/money"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:text="1000000"
             android:gravity="right"
             android:textSize="@dimen/font_size20"
-            android:textColor="@color/colorPayFont"
             />
     </LinearLayout>
     <LinearLayout
@@ -51,7 +49,7 @@
             android:textSize="@dimen/font_size20"
             android:layout_centerVertical="true"
             android:text="这里是时间"/>
-        <ImageView
+        <TextView
             android:id="@+id/tag"
             android:layout_width="30dp"
             android:layout_height="30dp"

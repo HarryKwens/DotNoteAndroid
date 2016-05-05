@@ -50,6 +50,11 @@
     <string name="person_text_username">用户名</string>
     <string name="person_text_mac">MAC</string>
 
+    <!-- Sharing-->
+    <string name="sharing_button_inport">导入</string>
+    <string name="sharing_button_export">导出</string>
+    <string name="sharing_textview_chooseFile_hint">请选择需要导入的文件</string>
+
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
