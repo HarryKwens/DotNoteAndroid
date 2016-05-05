@@ -1,13 +1,268 @@
 <html>
-<head>
+    <head>
+        <meta charset="utf-8">
 
-</head>
-<body>
-    <h1>Hello DotNote!</h1>
-    <div id="testP"></div>
+        <style>
+            @keyframes scale {
+                from {transform: scale(1, 1)}
+                50% {transform: scale(1.1, 1.1)}
+                to {transform: scale(1, 1)}
+            }
+            @-webkit-keyframes scale {
+                from {-webkit-transform: scale(1, 1)}
+                50% {-webkit-transform: scale(1.1, 1.1)}
+                to {-webkit-transform: scale(1, 1)}
+            }
+            @keyframes line {
+                from {
+                    left: 50%;
+                    width: 0px;
+                }
+                to {
+                    left: 0px;
+                    width: 100%;
+                }
+                }
+            @-webkit-keyframes line {
+                from {
+                    left: 50%;
+                    width: 0%;
+                }
+                to {
+                    left: 0%;
+                    width: 100%;
+                }
+            }
+        </style>
+
+        <style>
+            body, div, ul, li {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            ul {
+                list-style-type: none;
+            }
+
+            body {
+                background-color: #F1F1F1;
+            }
+
+            p {
+                margin:20px;
+            }
+
+            .fold-view {
+                margin: 0px auto 5px auto;
+                width: 100%;
+                height: 50px;
+                line-height: 50px;
+                background-color: #FFF;
+            }
+
+            .overview {
+                position: relative;
+                padding-left: 10px;
+                /*box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);*/
+                cursor: pointer;
+            }
+            .overview:before {
+                position: absolute;
+                bottom: 0px;
+                left: 50%;
+                width: 0%;
+                height: 1px;
+                background-color: black;
+                display: block;
+                content: ''
+            }
+            .overview:hover:before {
+                animation-name: line;
+                animation-duration: 0.5s;
+                animation-fill-mode: both;
+                -webkit-animation-name: line;
+                -webkit-animation-duration: 0.5s;
+                -webkit-animation-fill-mode: both;
+            }
+
+            .overview:hover .content {
+                display: inline-block;
+                animation-name: scale;
+                animation-duration: 0.5s;
+                animation-fill-mode: both;
+                -webkit-animation-name: scale;
+                -webkit-animation-duration: 0.5s;
+                -webkit-animation-fill-mode: both;
+            }
+
+            .fold-list {
+                display: none;
+                margin-top: 15px;
+                background-color: #FFF;
+                /*box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);*/
+            }
+
+            .open {
+                height: auto;
+            }
+
+            .open .fold-list {
+                display: block;
+            }
+
+            .list-item {
+                padding: 10px;
+                cursor: pointer;
+                border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+            }
+
+            .up {
+                position: relative;
+                display: inline-block;
+                border-style: solid;
+                border-width: 7px;
+                border-color: black transparent transparent transparent;
+            }
+            .up i {
+                position: absolute;
+                top: -8px;
+                left: -6.5px;
+                display: inline-block;
+                border-style: solid;
+                border-width: 7px;
+                border-color: #FFF transparent transparent transparent;
+            }
+            .down {
+                position: relative;
+                display: inline-block;
+                border-style: solid;
+                border-width: 7px;
+                border-color: transparent transparent black transparent;
+            }
+            .down i {
+                position: absolute;
+                bottom: -8px;
+                right: -6.5px;
+                display: inline-block;
+                border-style: solid;
+                border-width: 7px;
+                border-color:  transparent transparent #FFF transparent;
+            }
+        </style>
+    </head>
+    <body>
+    <div id="Today" style="margin-bottom:10px;">
+        <div id="todayMoney" style="float:left; margin:20px;">今日资金流动总和:</div>
+    </div>
     <script>
-        JSApi.showToast();
-        document.getElementById("testP").innerHTML = JSApi.getBillList();
+            document.getElementById("todayMoney").innerHTML += JSApi.getTodayMoney();
+
+            var json = JSApi.getBillList();
+
     </script>
-</body>
+    <HR style="FILTER: alpha(opacity=0,finishopacity=100,style=1)" width="100%" color=#B1B1B1 SIZE=1>
+    <p>
+        个人近三月账单统计：
+    </p>
+    <div id="dynHtml">
+        <div class="fold-view">
+            <div class="overview">
+                <span class="content">年-月：￥总金额</span>
+            </div>
+            <ul class="fold-list">
+                <li class="list-item">年-月-日 时：分 ：明细金额1</li>
+                <li class="list-item">年-月-日 时：分 ：明细金额2</li>
+                <li class="list-item">年-月-日 时：分 ：明细金额3</li>
+            </ul>
+        </div>
+    </div>
+    <HR style="FILTER: alpha(opacity=0,finishopacity=100,style=1)" width="100%" color=#B1B1B1 SIZE=1>
+    <p>多账单数据统计:</p>
+    <div id="share-Date-Html">
+        <p>您当前不存在分享数据，请选择正确的数据文件导入分享数据。</p>
+    </div>
+    <script type="text/javascript">
+        <!-- 获取账单数据-->
+        var jsonStr = JSApi.getAllBillList();
+        var jsonStr2 = JSApi.getLocalBillList();
+        var json = "";
+        var json2 = "";
+        <!-- 判断账单数据是否为空？否则转换为json-->
+        if(jsonStr2 != null && jsonStr2 != undefined && jsonStr2 != ""){
+            json2 = eval('('+ jsonStr2 +')');
+        }
+        if(jsonStr != null && jsonStr != undefined && jsonStr != ""){
+            json = eval('('+ jsonStr +')');
+        }
+
+        var htmlStr = "";
+        var shareHtmlStr = "";
+        var count = 0;
+        <!-- 动态生成分享统计列表-->
+        for (var key in json) {
+            var nodeJson = json[key];
+            var totalMoney = 0.0;
+            var liStr = "";
+
+            for (var i = 0; i < nodeJson.length; i++) {
+                var date = nodeJson[i].date;
+                var money = nodeJson[i].money;
+                liStr += '<li class="list-item">' + date + ':&nbsp;&nbsp;￥' + money +'</li>';
+                totalMoney += money;
+            }
+            shareHtmlStr += '<div class="fold-view"><div class="overview"><span class="content">'+ key + ':&nbsp;&nbsp;￥' + totalMoney + '</span></div><ul class="fold-list">';
+            shareHtmlStr += liStr;
+            shareHtmlStr += '</ul></div>';
+            var sharehtml = document.getElementById('share-Date-Html');
+            sharehtml.innerHTML = shareHtmlStr;
+        }
+        <!-- 动态生成本地数据统计，最多显示近三个月-->
+        for (var key2 in json2) {
+            var nodeJson = json2[key2];
+            var totalMoney = 0.0;
+            var liStr2 = "";
+
+            for (var i = 0; i < nodeJson.length; i++) {
+                var date = nodeJson[i].date;
+                var money = nodeJson[i].money;
+                liStr2 += '<li class="list-item">' + date + ':&nbsp;￥' + money +'</li>';
+                totalMoney += money;
+            }
+            htmlStr += '<div class="fold-view"><div class="overview"><span class="content">'+ key2 + ':&nbsp;￥' + totalMoney + '</span></div><ul class="fold-list">';
+            htmlStr += liStr2;
+            htmlStr += '</ul></div>';
+            var dynhtml = document.getElementById('dynHtml');
+            dynhtml.innerHTML = htmlStr;
+            count ++;
+            if (count>2 ) {
+                break;
+            }
+        }
+        <!-- 统计列表点击事件-->
+        var overviews = document.getElementsByClassName('overview');
+        var ups = document.getElementsByClassName('up');
+        for (var i = 0; i < overviews.length; i++) {
+            var overview = overviews[i];
+            var up = ups[i];
+            overview.onclick = function() {
+                var foldView = this.parentElement;
+                var classNames = foldView.className.trim().split(' ');
+                var isOpen = false;
+                var className = '';
+                for (var i = 0; i < classNames.length; i++) {
+                    if (classNames[i] == 'open') {
+                        isOpen = true;
+                        classNames[i] = '';
+                    }
+                    className = className + classNames[i] + ' ';
+                }
+                foldView.className = className;
+                if (!isOpen) {
+                    foldView.className += 'open';
+                }
+            }
+        }
+    </script>
+    </body>
 </html>

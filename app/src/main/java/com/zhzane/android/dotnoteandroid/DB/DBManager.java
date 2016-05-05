@@ -43,6 +43,7 @@ public class DBManager {
         helper = new DBHelper(context);
         db = helper.getWritableDatabase();
 
+        jsonObject = new JSONObject();
         List<User> users = queryCurrentUser();
         if (users.size() > 0) {
             for (User user : users) {
@@ -212,7 +213,7 @@ public class DBManager {
     public List<Bill> queryBill() throws JSONException {
         ArrayList<Bill> bills = new ArrayList<Bill>();
         JSONArray jsons = new JSONArray();
-        jsonObject = new JSONObject();
+//        jsonObject = new JSONObject();
         //Cursor c = queryTheCursor("Bill");
         Cursor c = queryTheCursorByWhere("Bill","UserId", "1");
         while (c.moveToNext()) {
@@ -236,7 +237,32 @@ public class DBManager {
         c.close();
         return bills;
     }
+    public List<Bill> queryAllBill() throws JSONException {
+        ArrayList<Bill> bills = new ArrayList<Bill>();
+        JSONArray jsons = new JSONArray();
+//        jsonObject = new JSONObject();
+        Cursor c = queryTheCursor("Bill");
+//        Cursor c = queryTheCursorByWhere("Bill","UserId", "1");
+        while (c.moveToNext()) {
+            Bill bill = new Bill();
+            bill._id = c.getInt(c.getColumnIndex("_id"));
+            bill.UserId = c.getString(c.getColumnIndex("UserId"));
+            bill.Money = c.getDouble(c.getColumnIndex("Money"));
+            bill.CreateTime = c.getString(c.getColumnIndex("CreateTime"));
+            bill.LastModifiedTime = c.getString(c.getColumnIndex("LastModifiedTime"));
+            bill.ExternalId = c.getString(c.getColumnIndex("ExternalId"));
+            bill.TagId = c.getString(c.getColumnIndex("TagId"));
+            bill.Describe = c.getString(c.getColumnIndex("Describe"));
 
+            if (bill.UserId.equals(String.valueOf(currentUser.UserId))) {
+                jsons.put(bill.toJSON(String.valueOf(currentUser.UserId)));
+            }
+            bills.add(bill);
+        }
+        jsonObject.put("bill", jsons);
+        c.close();
+        return bills;
+    }
     /*查询用户列表*/
     public List<User> queryCurrentUser() {
         ArrayList<User> users = new ArrayList<User>();
@@ -325,13 +351,20 @@ public class DBManager {
         return tags;
     }
 
-    public void toJSON(String userId) {
+    public boolean toJSON(String userId) {
 
-        queryCurrentUser();
-        queryTag();
+        boolean isImportOk = false;
+
+        try {
+            queryBill();
+            queryCurrentUser();
+            queryTag();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName = "MyJson.json";
+        String fileName = "DotNoteJson.json";
         File dir = new File(path);
         if (!dir.exists() || !dir.isDirectory()) {
             dir.mkdirs();
@@ -359,24 +392,31 @@ public class DBManager {
             bw.flush();
             bw.close();
             fw.close();
+            isImportOk = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return isImportOk;
     }
 
     /**
      * 读取Json文件。
      */
-    public void getJSON() {
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName = "MyJson.json";
+    public String getJSON(String filePath) {
         String jsonStr;
         String resultStr = "";
-        List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
+        String msg = "";
 
+        int x = filePath.lastIndexOf('.');
+        String fileType = filePath.substring(x+1);
+        if (!fileType.equals("json")){
+            msg ="请选择正确格式的文件";
+            return msg;
+        }
+//        List<Map<String, Object>> jsonList = new ArrayList<Map<String, Object>>();
         try {
             //读取json文件
-            File file = new File(path, fileName);
+            File file = new File(filePath);
             FileInputStream fis = new FileInputStream(file);
             BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
 
@@ -386,8 +426,10 @@ public class DBManager {
             JSONObject jsonOb = new JSONObject(resultStr);
             //分别获取JSON文件中bill，user，tag数据。
             getJsonData(jsonOb);
+            return msg;
         } catch (Exception e) {
             e.printStackTrace();
+            return e.getMessage().toString();
         }
     }
 

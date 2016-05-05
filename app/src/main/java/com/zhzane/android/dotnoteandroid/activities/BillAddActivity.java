@@ -361,6 +361,7 @@ public class BillAddActivity extends BaseActivity {
     //测试--添加账单
     private Boolean AddBill() {
 
+        double Currentmoney = 0.0;
         //获取标签TagId,以逗号分隔进行拼接。
         StringBuilder sb = new StringBuilder();
         for (String tagIdStr : tagIdList) {
@@ -368,9 +369,15 @@ public class BillAddActivity extends BaseActivity {
             sb.append(",");
         }
 
+        if(!isMoneyAdd){
+            Currentmoney = -1*Double.valueOf(money.getText().toString());
+        }else {
+            Currentmoney = Double.valueOf(money.getText().toString());
+        }
+
         boolean isOk = false;
         Bill bill = new Bill();
-        bill.Money = Double.valueOf(money.getText().toString());
+        bill.Money = Currentmoney;
         bill.CreateTime = createTime.getText().toString();
         bill.Describe = describe.getText().toString();
         bill.LastModifiedTime = createTime.getText().toString();
