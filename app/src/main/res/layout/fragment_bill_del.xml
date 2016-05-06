@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="删除账单"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/font_size18"
+        />
+    <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="确认删除吗？"
+        android:textSize="@dimen/font_size20"
+        />
+
+</LinearLayout>

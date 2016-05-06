@@ -11,6 +11,8 @@
     //字体大小18sp
     <dimen name="font_size20">20sp</dimen>
     //字体大小20sp
+    <dimen name="font_size25">25sp</dimen>
+    //字体大小40sp
     <dimen name="radius10">10dip</dimen>
     //输入框圆角度数
     <dimen name="editText_height">50dp</dimen>

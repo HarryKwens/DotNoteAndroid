@@ -51,9 +51,13 @@
             android:text="这里是时间"/>
         <TextView
             android:id="@+id/tag"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_alignParentRight="true"
             />
+        <TextView
+            android:id="@+id/_id"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
     </RelativeLayout>
 </LinearLayout>

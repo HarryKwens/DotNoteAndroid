@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
+    <!-- ToolBar标题栏-->
+    <include layout="@layout/menu_bill_info"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding10">
+        <!-- 金额输入-->
+        <TextView
+            android:id="@+id/txt_bill_info_Money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding10"
+            android:text="@string/txtAddBill_Money"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding10"
+            android:orientation="horizontal">
+            <!-- 金额正负（形式待定）-->
+            <!--<com.zhzane.android.dotnoteandroid.component.awesome.AwesomeButton-->
+                <!--android:id="@+id/bill_info_button_is_add"-->
+                <!--android:layout_width="@dimen/editText_height"-->
+                <!--android:layout_height="@dimen/editText_height"-->
+                <!--android:background="@drawable/rounded_editext"-->
+                <!--android:text="@string/awesome_minus"-->
+                <!--android:textColor="@color/colorMoneyDecrease"-->
+                <!--android:textSize="24sp" />-->
+            <!-- 输入金额，币制待定-->
+            <TextView
+                android:id="@+id/bill_info_tv_Money"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/editText_height"
+                android:background="@drawable/rounded_editext"
+                android:gravity="center_vertical|center_horizontal"
+                android:hint="金额"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textColor="@color/colorMoneyDecrease"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+        <!-- 账单创建时间-->
+        <TextView
+            android:id="@+id/txt_bill_info_CreateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:text="@string/txtAddBill_CreateTime"
+            android:textSize="16sp" />
+
+        <com.zhzane.android.dotnoteandroid.component.awesome.AwesomeButton
+            android:id="@+id/bill_info_button_CreateTime"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_editext"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:hint="@string/txtAddBill_CreateTime"
+            android:inputType="datetime"
+            android:singleLine="true"
+            android:textColor="#222222" />
+        <!-- 备注 -->
+        <TextView
+            android:id="@+id/txt_bill_info_Describe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:text="@string/txtAddBill_Describe"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/bill_info_tv_Describe"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_editext"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="@string/txtAddBill_hint_decribe"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:singleLine="true"
+            android:textColor="#222222"
+            android:maxLength="16"
+            android:textSize="@dimen/font_size20"
+            />
+        <!-- 标签 -->
+        <TextView
+            android:id="@+id/txt_bill_info_Tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding20"
+            android:text="@string/txtAddBill_Tag"
+            android:textSize="16sp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <LinearLayout
+                android:id="@+id/bill_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

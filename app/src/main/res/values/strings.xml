@@ -6,7 +6,7 @@
     <string name="title_activity_person">个人中心</string>
     <string name="title_activity_statistics">统计</string>
     <string name="title_activity_share">分享</string>
-
+    <string name="title_activity_bill_info">账单详情</string>
     <!-- 账单页面 -->
     <string name="txtAddBill_Money">金额</string>
     <string name="txtAddBill_Describe">备注</string>
@@ -17,6 +17,11 @@
     <string name="txtAddBill_submit">完成添加</string>
     <!-- Strings related to Settings -->
 
+    <!-- 账单详情页面-->
+    <string name="bill_info_textview_money">金额:</string>
+    <string name="bill_info_textview_describe">备注:</string>
+    <string name="bill_info_textview_createtime">创建时间:</string>
+    <string name="bill_info_textview_tag">标签类别:</string>
     <!-- 添加标签页面-->
     <string name="add_tag_tagname">标签名称</string>
     <string name="add_tag_describe">标签备注</string>

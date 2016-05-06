@@ -172,10 +172,10 @@ public class DBManager {
     }
 
     /*删除账单*/
-    public void deleteBill(Bill bill) {
+    public void deleteBill(int _id) {
         db.beginTransaction();
         try {
-            db.delete("Bill", "_id = ?", new String[]{Integer.toString(bill._id)});
+            db.delete("Bill", "_id = ?", new String[]{Integer.toString(_id)});
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -351,6 +351,19 @@ public class DBManager {
         return tags;
     }
 
+    public Tag queryTagByWhere(String tagid) {
+        ArrayList<Tag> tags = new ArrayList<Tag>();
+        Cursor c = queryTheCursorByWhere("Tag", "TagId", tagid);
+        Tag tag = new Tag();
+        while (c.moveToNext()) {
+            tag.TagId = c.getInt(c.getColumnIndex("TagId"));
+            tag.TagName = c.getString(c.getColumnIndex("TagName"));
+            tag.UseNum = c.getInt(c.getColumnIndex("UseNum"));
+            tag.Describe = c.getString(c.getColumnIndex("Describe"));
+            tag.mac = c.getString(c.getColumnIndex("mac"));
+        }
+        return tag;
+    }
     public boolean toJSON(String userId) {
 
         boolean isImportOk = false;
@@ -464,16 +477,16 @@ public class DBManager {
                         }
                     }
                     if (!isHasUser) {
-                        newUser.UserId = userlst.size();
+                        newUser.UserId = userlst.size()+1;
                         newUser.UserName = jo.getString("UserName");
                         newUser.TotalMoney = jo.getDouble("TotalMoney");
-                        newUser.RelatedUserId = jo.getString("RelateUserId");
+                        newUser.RelatedUserId = "";
                         newUser.MAC = jo.getString("MAC");
                         addUser(newUser);
                     }
                 }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
             //获取账单数据并插入数据
             try {
@@ -512,7 +525,7 @@ public class DBManager {
                     }
                     if (!isHasTag) {
                         Tag tag = new Tag();
-                        tag.TagId = taglst.size();
+                        tag.TagId = taglst.size()+1;
                         tag.TagName = jo.getString("TagName");
                         tag.UseNum = jo.getInt("UseNum");
                         tag.Describe = jo.getString("Describe");
